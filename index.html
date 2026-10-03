@@ -158,23 +158,27 @@
     <footer><p>تمامی حقوق محفوظ است | <strong>Mobile Iran</strong></p></footer>
 
     <script>
-        const productsData = [
-            { id: 1, name: "قاب سیلیکونی اصل آیفون", category: "قاب‌ها (Cases)", price: "۳۵۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Generic%20Silicone%20Case%20for%20iPhone%2017%20Pro%20Max%20_%20Soft-Touch%20Shockproof%20Slim%20Protective%20Cover%20with%20Soft%20Inner%20Lining,%20Camera%20Protection%20&%20Anti-Slip%20Grip%20-%20Orange%20_%20Best%20Price%20Egypt%20_%20Cairo,%20Giza.jpg" },
-            { id: 2, name: "پاوربانک مگ‌سیف ۲۰ وات", category: "مگ‌سیف (MagSafe)", price: "۱,۲۵۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Apple%20Magsafe%20Wireless%20Power%20Bank%20For%20Iphone%205000mah%2020w%20Fast%20Charging.jpg" },
-            { id: 3, name: "کابل تایپ سی به لایتنینگ", category: "کابل و مبدل (Cables)", price: "۲۸۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/download%20(13).jpg" },
-            { id: 4, name: "شارژر دیواری سریع ۲۰ وات", category: "شارژر وایرلس (Charger)", price: "۴۹۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/download%20(15).jpg" },
-            { id: 5, name: "پاوربانک ۳۵ وات مسافرتی", category: "پاوربانک (Power Banks)", price: "۱,۸۹۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Don't%20Board%20Your%20Next%20Flight%20Without%20This%2035W%20Fast%20Charging%20Power%20Bank.jpg" }
-        ];
+        const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
+        let productsData = [];
+
+        async function fetchProducts() {
+            try {
+                const res = await fetch(`${API_BASE}/api/products`);
+                productsData = await res.json();
+                renderProducts(productsData);
+            } catch (err) {
+                console.error("Error fetching products:", err);
+                document.getElementById('productsGrid').innerHTML = '<p style="text-align:center; padding:2rem; width:100%;">خطا در ارتباط با سرور.</p>';
+            }
+        }
 
         function renderProducts(items) {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
-
             if (items.length === 0) {
                 grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#86868b; padding:2rem;">محصولی یافت نشد.</p>';
                 return;
             }
-
             items.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
@@ -198,22 +202,19 @@
                 document.querySelectorAll('.filter-tab').forEach(btn => btn.classList.remove('active'));
                 event.target.classList.add('active');
             }
-            
             if (category === 'all') {
                 renderProducts(productsData);
             } else {
-                const filtered = productsData.filter(p => p.category === category);
-                renderProducts(filtered);
+                renderProducts(productsData.filter(p => p.category === category));
             }
         }
 
         function handleSearch() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            const filtered = productsData.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
-            renderProducts(filtered);
+            renderProducts(productsData.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)));
         }
 
-        renderProducts(productsData);
+        window.onload = fetchProducts;
     </script>
 </body>
 </html>
