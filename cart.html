@@ -15,6 +15,8 @@
             --text-color: #1d1d1f; 
             --text-light: #86868b; 
             --danger: #ff3b30;
+            --success: #34c759;
+            --accent-color: #007aff;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #fff; color: var(--text-color); line-height: 1.6; overflow-x: hidden; }
@@ -33,6 +35,10 @@
         .cart-wrapper { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; display: grid; gap: 2rem; grid-template-columns: 1fr; }
         .page-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--dark-color); }
 
+        /* بنر راهنما */
+        .guide-banner { background-color: #e8f4fd; border-right: 4px solid var(--accent-color); padding: 1rem; border-radius: 8px; margin-bottom: 2rem; color: #0056b3; font-size: 0.9rem; line-height: 1.8; }
+        .guide-banner i { margin-left: 5px; font-size: 1.1rem; }
+
         .cart-items-container { display: flex; flex-direction: column; gap: 1rem; }
         .cart-item { display: flex; gap: 1rem; background: #fff; border: 1px solid var(--border-color); padding: 1rem; border-radius: 12px; align-items: center; position: relative; }
         .cart-item img { width: 80px; height: 80px; object-fit: contain; border-radius: 8px; background: var(--gray-bg); padding: 5px; }
@@ -48,14 +54,35 @@
 
         .btn-remove { position: absolute; top: 1rem; left: 1rem; background: none; border: none; color: var(--danger); font-size: 1.1rem; cursor: pointer; }
 
-        /* باکس خلاصه سفارش */
-        .summary-box { background: var(--gray-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 16px; height: fit-content; }
-        .summary-box h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
+        /* فرم اطلاعات و پرداخت */
+        .checkout-section { background: #fff; border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 16px; margin-top: 2rem; }
+        .section-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; }
         
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-color); }
-        .summary-row.total { font-weight: 800; font-size: 1.1rem; border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem; color: var(--dark-color); }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--dark-color); }
+        .form-control { padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+        .form-control:focus { border-color: var(--accent-color); }
+        textarea.form-control { resize: vertical; min-height: 80px; }
 
-        .btn-checkout { background: var(--dark-color); color: #fff; width: 100%; padding: 1rem; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .shipping-options { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem; }
+        .radio-label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 8px; transition: 0.2s; }
+        .radio-label:hover { background: var(--gray-bg); }
+        .radio-label input { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-color); }
+        .shipping-desc { font-size: 0.8rem; color: var(--text-light); margin-right: auto; }
+
+        /* باکس خلاصه سفارش و پرداخت */
+        .summary-box { background: var(--gray-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 16px; height: fit-content; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-color); }
+        .summary-row.total { font-weight: 800; font-size: 1.1rem; border-top: 1px solid var(--border-color); padding-top: 1rem; margin-top: 1rem; color: var(--accent-color); }
+
+        .payment-info-box { background: #fff; border: 1px dashed var(--accent-color); padding: 1rem; border-radius: 12px; margin: 1.5rem 0; text-align: center; }
+        .payment-info-box p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .copyable-text { display: flex; align-items: center; justify-content: space-between; background: var(--gray-bg); padding: 0.6rem 1rem; border-radius: 8px; margin-bottom: 0.8rem; font-weight: 700; font-family: monospace; font-size: 1.1rem; letter-spacing: 1px; direction: ltr;}
+        .btn-copy { background: none; border: none; color: var(--accent-color); cursor: pointer; font-size: 1.1rem; padding: 5px; }
+        
+        .btn-checkout { background: var(--dark-color); color: #fff; width: 100%; padding: 1rem; border: none; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: background 0.2s; }
+        .btn-checkout:hover { background: #000; }
         .btn-checkout:active { transform: scale(0.98); }
 
         .empty-cart { text-align: center; padding: 3rem 1rem; color: var(--text-light); }
@@ -69,7 +96,9 @@
             .nav-links { display: flex; gap: 1.5rem; align-items: center; }
             .nav-links a { font-size: 0.9rem; color: var(--text-light); }
             .nav-links a:hover, .nav-links a.active { color: var(--dark-color); font-weight: 600; }
-            .cart-wrapper { grid-template-columns: 2fr 1fr; align-items: start; }
+            .cart-wrapper { grid-template-columns: 1.8fr 1.2fr; align-items: start; }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .full-width { grid-column: 1 / -1; }
         }
     </style>
 </head>
@@ -97,10 +126,12 @@
     <footer><p>تمامی حقوق محفوظ است | <strong>Mobile Iran</strong></p></footer>
 
     <script>
-        const SHIPPING_COST = 180000;
+        const SHIPPING_COST_POST = 180000;
+        let currentShippingCost = SHIPPING_COST_POST; // پیش‌فرض روی پست
+        let finalPayableAmount = 0; // برای دکمه کپی مبلغ
+        
         let cart = JSON.parse(localStorage.getItem('mobileIranCart')) || [];
 
-        // تابع تبدیل اعداد فارسی به انگلیسی برای محاسبه دقیق ریاضی قیمت‌ها
         function persianToEnglishNumber(str) {
             if (!str) return '0';
             const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
@@ -110,7 +141,6 @@
             return str;
         }
 
-        // تابع فرمت کردن اعداد به شکل سه‌رقم سه‌رقم
         function formatNumber(num) {
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
@@ -129,10 +159,20 @@
                 return;
             }
 
-            let itemsHtml = '<div class="cart-items-container"><h2 class="page-title">سبد خرید شما</h2>';
+            // بخش راست: راهنما + محصولات + فرم اطلاعات
+            let rightColHtml = `
+                <div>
+                    <div class="guide-banner">
+                        <i class="fa-solid fa-circle-info"></i> <strong>راهنمای ثبت سفارش:</strong> 
+                        لطفا پس از بررسی سبد خرید، اطلاعات پستی خود را با دقت وارد نمایید. سپس مبلغ نهایی را به شماره کارت اعلام شده در کادر سمت چپ واریز کرده و "شماره پیگیری تراکنش" را در فیلد مربوطه وارد کنید. نتیجه بررسی فیش و وضعیت ارسال از طریق <b>پیامک</b> به شما اطلاع‌رسانی خواهد شد.
+                    </div>
+                    
+                    <h2 class="page-title">سبد خرید شما</h2>
+                    <div class="cart-items-container">
+            `;
             
             cart.forEach((item, index) => {
-                itemsHtml += `
+                rightColHtml += `
                     <div class="cart-item">
                         <button class="btn-remove" onclick="removeItem(${index})"><i class="fa-solid fa-trash"></i></button>
                         <img src="${item.image}" alt="${item.name}">
@@ -148,21 +188,102 @@
                     </div>
                 `;
             });
-            itemsHtml += '</div>';
+            rightColHtml += `</div>`;
 
+            // فرم اطلاعات مشتری
+            rightColHtml += `
+                    <div class="checkout-section">
+                        <h3 class="section-title">اطلاعات گیرنده</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>نام و نام خانوادگی *</label>
+                                <input type="text" id="cus_name" class="form-control" placeholder="مثال: علی احمدی">
+                            </div>
+                            <div class="form-group">
+                                <label>شماره موبایل *</label>
+                                <input type="tel" id="cus_mobile" class="form-control" placeholder="09123456789">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>ایمیل (اختیاری)</label>
+                                <input type="email" id="cus_email" class="form-control" placeholder="example@mail.com">
+                            </div>
+                            <div class="form-group full-width">
+                                <label>آدرس دقیق *</label>
+                                <textarea id="cus_address" class="form-control" placeholder="استان، شهر، خیابان، کوچه، پلاک، واحد"></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label>کد پستی (۱۰ رقمی) *</label>
+                                <input type="text" id="cus_postal" class="form-control" placeholder="1234567890">
+                            </div>
+                        </div>
+
+                        <h3 class="section-title">روش ارسال</h3>
+                        <div class="shipping-options">
+                            <label class="radio-label">
+                                <input type="radio" name="shipping" value="post" checked onchange="updateShipping(this.value)">
+                                <span>پست پیشتاز</span>
+                                <span class="shipping-desc">${formatNumber(SHIPPING_COST_POST)} تومان</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="shipping" value="snapp" onchange="updateShipping(this.value)">
+                                <span>پیک اسنپ (فقط تهران)</span>
+                                <span class="shipping-desc">پس‌کرایه (پرداخت در محل)</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // بخش چپ: خلاصه سفارش و پرداخت
             const summaryHtml = `
                 <div class="summary-box">
-                    <h3>خلاصه سفارش</h3>
+                    <h3 class="section-title">خلاصه سفارش و پرداخت</h3>
                     <div class="summary-row"><span>جمع محصولات:</span> <span id="itemsTotalText"></span></div>
-                    <div class="summary-row"><span>هزینه ارسال:</span> <span id="shippingText">${formatNumber(SHIPPING_COST)} تومان</span></div>
+                    <div class="summary-row"><span>هزینه ارسال:</span> <span id="shippingText">${formatNumber(SHIPPING_COST_POST)} تومان</span></div>
                     <div class="summary-row total"><span>مبلغ قابل پرداخت:</span> <span id="finalTotalText"></span></div>
-                    <button class="btn-checkout" onclick="alert('انتقال به درگاه پرداخت...')">
-                        <i class="fa-solid fa-credit-card"></i> ثبت و پرداخت
+                    
+                    <div class="payment-info-box">
+                        <p>لطفاً مبلغ فوق را به کارت زیر واریز نمایید:</p>
+                        
+                        <!-- شماره کارت -->
+                        <div class="copyable-text">
+                            <button class="btn-copy" onclick="copyToClipboard('6037991999999999', this)" title="کپی شماره کارت"><i class="fa-regular fa-copy"></i></button>
+                            <span id="cardNumber">6037-9919-9999-9999</span>
+                        </div>
+                        <p style="font-size:0.8rem; color:var(--text-light); margin-bottom: 1rem;">بنام: فروشگاه موبایل ایران</p>
+                        
+                        <!-- مبلغ دقیق -->
+                        <div class="copyable-text" style="background:#e8f4fd;">
+                            <button class="btn-copy" onclick="copyToClipboard(finalPayableAmount, this)" title="کپی مبلغ"><i class="fa-regular fa-copy"></i></button>
+                            <span id="copyableAmount">0</span>
+                        </div>
+                        <p style="font-size:0.8rem; color:var(--text-light);">مبلغ به ریال جهت کپی در اپلیکیشن بانکی</p>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label style="color:var(--danger);">شماره پیگیری تراکنش (رسید واریز) *</label>
+                        <input type="text" id="transaction_id" class="form-control" placeholder="شماره ارجاع یا پیگیری فیش..." style="border-color:var(--danger);">
+                    </div>
+
+                    <button class="btn-checkout" onclick="submitOrder()">
+                        <i class="fa-solid fa-check-circle"></i> ثبت نهایی و پردازش
                     </button>
                 </div>
             `;
 
-            wrapper.innerHTML = itemsHtml + summaryHtml;
+            wrapper.innerHTML = rightColHtml + summaryHtml;
+            calculateCartTotals();
+        }
+
+        // بروزرسانی هزینه ارسال براساس انتخاب رادیو باتن
+        function updateShipping(method) {
+            if(method === 'post') {
+                currentShippingCost = SHIPPING_COST_POST;
+                document.getElementById('shippingText').innerText = formatNumber(SHIPPING_COST_POST) + ' تومان';
+            } else {
+                currentShippingCost = 0;
+                document.getElementById('shippingText').innerText = 'پس‌کرایه';
+            }
             calculateCartTotals();
         }
 
@@ -170,34 +291,77 @@
             let itemsTotal = 0;
             
             cart.forEach(item => {
-                // تبدیل عدد فارسی به انگلیسی، سپس حذف کاماها و استخراج عدد
                 let englishString = persianToEnglishNumber(item.price.toString());
                 let cleanPrice = parseInt(englishString.replace(/[^0-9]/g, '')) || 0;
                 itemsTotal += cleanPrice * item.qty;
             });
 
-            let finalTotal = itemsTotal + SHIPPING_COST;
+            let finalTotal = itemsTotal + currentShippingCost;
+            
+            // ذخیره مبلغ به ریال (بدون ویرگول) برای دکمه کپی
+            finalPayableAmount = finalTotal * 10; 
 
             document.getElementById('itemsTotalText').innerText = formatNumber(itemsTotal) + ' تومان';
             document.getElementById('finalTotalText').innerText = formatNumber(finalTotal) + ' تومان';
+            document.getElementById('copyableAmount').innerText = formatNumber(finalPayableAmount) + ' ریال';
         }
 
+        // تابع کپی کردن متن
+        function copyToClipboard(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                let originalHtml = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fa-solid fa-check" style="color:var(--success);"></i>';
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHtml;
+                }, 2000);
+            });
+        }
+
+        // تغییر تعداد محصولات
         function changeQty(index, amount) {
             cart[index].qty += amount;
             if (cart[index].qty < 1) {
                 cart.splice(index, 1);
             }
-            saveAndRender();
-        }
-
-        function removeItem(index) {
-            cart.splice(index, 1);
-            saveAndRender();
-        }
-
-        function saveAndRender() {
             localStorage.setItem('mobileIranCart', JSON.stringify(cart));
             renderCart();
+            // اگر کاربر روش ارسال را قبلا عوض کرده بود، دوباره بررسی شود
+            const selectedShipping = document.querySelector('input[name="shipping"]:checked');
+            if(selectedShipping) updateShipping(selectedShipping.value);
+        }
+
+        // حذف محصول
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('mobileIranCart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        // پردازش و ارسال نهایی فرم
+        function submitOrder() {
+            const name = document.getElementById('cus_name').value.trim();
+            const mobile = document.getElementById('cus_mobile').value.trim();
+            const address = document.getElementById('cus_address').value.trim();
+            const postal = document.getElementById('cus_postal').value.trim();
+            const tracking = document.getElementById('transaction_id').value.trim();
+
+            if(!name || !mobile || !address || !postal) {
+                alert("لطفا اطلاعات گیرنده (نام، موبایل، آدرس و کد پستی) را به صورت کامل وارد کنید.");
+                return;
+            }
+            if(!tracking) {
+                alert("لطفا شماره پیگیری تراکنش بانکی (رسید واریز) را وارد کنید.");
+                return;
+            }
+
+            // در اینجا اطلاعات به دیتابیس شما (بک‌اند) ارسال می‌شود
+            // چون این یک نسخه استاتیک است، صرفاً پیام موفقیت نمایش داده می‌شود
+            
+            alert(`سفارش شما با موفقیت ثبت شد!\n\nاطلاعات جهت بررسی به سیستم ارسال شد. نتیجه تایید پرداخت و مراحل ارسال کالا، از طریق پیامک به شماره ${mobile} اطلاع‌رسانی خواهد شد.`);
+            
+            // پاک کردن سبد خرید بعد از ثبت موفق
+            localStorage.removeItem('mobileIranCart');
+            window.location.href = "index.html"; // بازگشت به صفحه اصلی
         }
 
         window.addEventListener('DOMContentLoaded', renderCart);
