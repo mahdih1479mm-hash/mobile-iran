@@ -11,66 +11,115 @@ export default {
       return new Response(null, { headers: corsHeaders });
     }
 
+    const jsonRes = (data, status = 200) => new Response(JSON.stringify(data), {
+      status,
+      headers: { ...corsHeaders, "Content-Type": "application/json" }
+    });
+
     try {
-      // ۱. دریافت لیست محصولات از دیتابیس ابری D1
-      if (url.pathname === "/api/products" && request.method === "GET") {
-        const { results } = await env.DB.prepare("SELECT * FROM products").all();
-        return new Response(JSON.stringify(results), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
+      const path = url.pathname;
+      const method = request.method;
+
+      // ==================== مدیریت محصولات ====================
+      // ۱. دریافت همه محصولات
+      if (path === "/api/products" && method === "GET") {
+        const { results } = await env.DB.prepare("SELECT * FROM products ORDER BY id DESC").all();
+        return jsonRes(results);
       }
 
-      // ۲. افزودن محصول جدید به دیتابیس ابری (توسط ادمین)
-      if (url.pathname === "/api/products" && request.method === "POST") {
-        const data = await request.json();
+      // ۲. افزودن محصول جدید
+      if (path === "/api/products" && method === "POST") {
+        const body = await request.json();
         await env.DB.prepare(
-          "INSERT INTO products (name, price, category, image, description) VALUES (?, ?, ?, ?, ?)"
-        ).bind(data.name, data.price, data.category, data.image, data.description).run();
-        
-        return new Response(JSON.stringify({ success: true, message: "محصول با موفقیت در دیتابیس ابری ذخیره شد" }), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
+          `INSERT INTO products (name, category, price, discount_price, section, image, description)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`
+        ).bind(
+          body.name,
+          body.category || "",
+          body.price,
+          body.discount_price || "",
+          body.section || "normal",
+          body.image || "",
+          body.description || ""
+        ).run();
+        return jsonRes({ success: true, message: "محصول با موفقیت اضافه شد" });
       }
 
-      return new Response("Not Found", { status: 404, headers: corsHeaders });
+      // ۳. ویرایش محصول
+      if (path.startsWith("/api/products/") && method === "PUT") {
+        const id = path.split("/").pop();
+        const body = await request.json();
+        await env.DB.prepare(
+          `UPDATE products SET name=?, category=?, price=?, discount_price=?, section=?, image=?, description=? WHERE id=?`
+        ).bind(
+          body.name,
+          body.category || "",
+          body.price,
+          body.discount_price || "",
+          body.section || "normal",
+          body.image || "",
+          body.description || "",
+          id
+        ).run();
+        return jsonRes({ success: true, message: "محصول با موفقیت به‌روزرسانی شد" });
+      }
+
+      // ۴. حذف محصول
+      if (path.startsWith("/api/products/") && method === "DELETE") {
+        const id = path.split("/").pop();
+        await env.DB.prepare("DELETE FROM products WHERE id=?").bind(id).run();
+        return jsonRes({ success: true, message: "محصول با موفقیت حذف شد" });
+      }
+
+      // ==================== مدیریت کاربران ====================
+      // ۱. ثبت‌نام کاربر
+      if (path === "/api/users/register" && method === "POST") {
+        const body = await request.json();
+        await env.DB.prepare(
+          "INSERT INTO users (name, phone_or_email, password) VALUES (?, ?, ?)"
+        ).bind(body.name, body.phone_or_email, body.password).run();
+        return jsonRes({ success: true, message: "ثبت‌نام با موفقیت انجام شد" });
+      }
+
+      // ۲. ورود کاربر
+      if (path === "/api/users/login" && method === "POST") {
+        const body = await request.json();
+        const { results } = await env.DB.prepare(
+          "SELECT id, name, phone_or_email FROM users WHERE phone_or_email=? AND password=?"
+        ).bind(body.phone_or_email, body.password).all();
+
+        if (results && results.length > 0) {
+          return jsonRes({ success: true, user: results[0] });
+        } else {
+          return jsonRes({ success: false, error: "نام کاربری یا رمز عبور اشتباه است" }, 401);
+        }
+      }
+
+      // ۳. دریافت لیست کاربران برای ادمین
+      if (path === "/api/users" && method === "GET") {
+        const { results } = await env.DB.prepare("SELECT id, name, phone_or_email, created_at FROM users ORDER BY id DESC").all();
+        return jsonRes(results);
+      }
+
+      // ==================== مدیریت سفارشات ====================
+      // ۱. دریافت سفارشات برای ادمین
+      if (path === "/api/orders" && method === "GET") {
+        const { results } = await env.DB.prepare("SELECT * FROM orders ORDER BY id DESC").all();
+        return jsonRes(results);
+      }
+
+      // ۲. ثبت سفارش جدید توسط کاربر
+      if (path === "/api/orders" && method === "POST") {
+        const body = await request.json();
+        await env.DB.prepare(
+          "INSERT INTO orders (user_name, phone, total_amount, items) VALUES (?, ?, ?, ?)"
+        ).bind(body.user_name, body.phone, body.total_amount, JSON.stringify(body.items || [])).run();
+        return jsonRes({ success: true, message: "سفارش ثبت شد" });
+      }
+
+      return jsonRes({ error: "Not Found" }, 404);
     } catch (err) {
-      return new Response(JSON.stringify({ error: err.message }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" }
-      });
+      return jsonRes({ success: false, error: err.message }, 500);
     }
   }
 };
-```[cite: 13]
-
----
-
-### ۲. فایل `wrangler.toml` (تنظیمات اتصال Worker به پایگاه داده D1)
-این فایل تنظیمات اتصال پروژه شما به سرور ابری و دیتابیس `mobile_iran_db` را حفظ می‌کند[cite: 12].
-
-```toml
-name = "mobile-iran"
-main = "worker.js"
-compatibility_date = "2026-10-03"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "mobile_iran_db"
-database_id = "d56093cc-7343-4bac-8941-a8ba24321841"
-```[cite: 12]
-
----
-
-### نکته برای اتصال صفحات (مثل `products.html` یا `index.html`) به این سرور:
-در فایل‌های فرانت‌اند خود، به جای استفاده از آرایه‌های ثابت محلی، می‌توانید به راحتی لیست محصولات را از طریق API ابری دریافت کنید:
-
-```javascript
-async function loadProductsFromCloud() {
-    try {
-        let response = await fetch('/api/products');
-        let productsData = await response.json();
-        renderProducts(productsData); // تابع نمایش محصولات در صفحه
-    } catch (error) {
-        console.error("خطا در دریافت اطلاعات از سرور ابری:", error);
-    }
-}
