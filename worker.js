@@ -12,7 +12,7 @@ export default {
     }
 
     try {
-      // 1. دریافت لیست محصولات از دیتابیس
+      // ۱. دریافت لیست محصولات از دیتابیس ابری D1
       if (url.pathname === "/api/products" && request.method === "GET") {
         const { results } = await env.DB.prepare("SELECT * FROM products").all();
         return new Response(JSON.stringify(results), {
@@ -20,22 +20,16 @@ export default {
         });
       }
 
-      // 2. افزودن محصول جدید (توسط ادمین)
+      // ۲. افزودن محصول جدید به دیتابیس ابری (توسط ادمین)
       if (url.pathname === "/api/products" && request.method === "POST") {
         const data = await request.json();
         await env.DB.prepare(
           "INSERT INTO products (name, price, category, image, description) VALUES (?, ?, ?, ?, ?)"
         ).bind(data.name, data.price, data.category, data.image, data.description).run();
         
-        return new Response(JSON.stringify({ success: true, message: "محصول با موفقیت اضافه شد" }), {
+        return new Response(JSON.stringify({ success: true, message: "محصول با موفقیت در دیتابیس ابری ذخیره شد" }), {
           headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
-      }
-
-      // 3. سرویس کردن صفحه اصلی (index.html)
-      if (url.pathname === "/" || url.pathname === "/index.html") {
-        // اینجا می‌توانید محتوای کامل index.html بالا را قرار دهید تا در ریشه سایت لود شود
-        // یا اینکه پروژه را در Cloudflare Pages تنظیم کنید تا فایل‌های گیت‌هاب مستقیم خوانده شوند.
       }
 
       return new Response("Not Found", { status: 404, headers: corsHeaders });
@@ -47,3 +41,36 @@ export default {
     }
   }
 };
+```[cite: 13]
+
+---
+
+### ۲. فایل `wrangler.toml` (تنظیمات اتصال Worker به پایگاه داده D1)
+این فایل تنظیمات اتصال پروژه شما به سرور ابری و دیتابیس `mobile_iran_db` را حفظ می‌کند[cite: 12].
+
+```toml
+name = "mobile-iran"
+main = "worker.js"
+compatibility_date = "2026-10-03"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mobile_iran_db"
+database_id = "d56093cc-7343-4bac-8941-a8ba24321841"
+```[cite: 12]
+
+---
+
+### نکته برای اتصال صفحات (مثل `products.html` یا `index.html`) به این سرور:
+در فایل‌های فرانت‌اند خود، به جای استفاده از آرایه‌های ثابت محلی، می‌توانید به راحتی لیست محصولات را از طریق API ابری دریافت کنید:
+
+```javascript
+async function loadProductsFromCloud() {
+    try {
+        let response = await fetch('/api/products');
+        let productsData = await response.json();
+        renderProducts(productsData); // تابع نمایش محصولات در صفحه
+    } catch (error) {
+        console.error("خطا در دریافت اطلاعات از سرور ابری:", error);
+    }
+}
