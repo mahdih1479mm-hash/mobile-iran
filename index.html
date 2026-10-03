@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mobile Iran | فروشگاه لوازم جانبی موبایل</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root { 
+            --dark-color: #1d1d1f; 
+            --gray-bg: #f5f5f7; 
+            --border-color: #e5e5ea; 
+            --text-color: #1d1d1f; 
+            --text-light: #86868b; 
+            --accent-color: #0071e3;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #fff; color: var(--text-color); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* هدر بهینه‌شده برای موبایل */
+        header { background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--dark-color); }
+        
+        .nav-links { display: none; } /* در موبایل منو مخفی یا کشویی می‌شود */
+        
+        .header-actions { display: flex; align-items: center; gap: 0.6rem; }
+        .btn-action { background: var(--gray-bg); border: 1px solid var(--border-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--dark-color); position: relative; }
+        
+        /* بخش جستجو در موبایل */
+        .search-bar-container { background: var(--gray-bg); padding: 0.6rem 1rem; border-bottom: 1px solid var(--border-color); }
+        .search-box { position: relative; width: 100%; max-width: 600px; margin: 0 auto; }
+        .search-box input { width: 100%; padding: 0.6rem 2.5rem 0.6rem 1rem; border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.9rem; background: #fff; outline: none; }
+        .search-box i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); }
+
+        /* بنر قهرمان (Hero) ریسپانسیو */
+        .hero { background-color: var(--gray-bg); padding: 2rem 1rem; text-align: center; }
+        .hero-container { max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; align-items: center; }
+        .hero-content h1 { font-size: 1.8rem; font-weight: 800; color: var(--dark-color); line-height: 1.3; }
+        .hero-content p { color: var(--text-light); font-size: 0.95rem; margin-bottom: 1rem; }
+        .btn-primary { background-color: var(--dark-color); color: #fff; padding: 0.7rem 1.5rem; border-radius: 25px; font-weight: 600; font-size: 0.9rem; border: none; display: inline-block; }
+        .hero-image img { width: 100%; max-height: 250px; border-radius: 12px; object-fit: cover; }
+
+        /* دسته‌بندی‌ها به صورت اسکرول افقی در موبایل */
+        .categories-wrapper { padding: 1.5rem 0; overflow-x: auto; scrollbar-width: none; }
+        .categories-wrapper::-webkit-scrollbar { display: none; }
+        .categories { display: flex; gap: 1rem; padding: 0 1rem; width: max-content; }
+        .category-item { text-align: center; width: 85px; cursor: pointer; }
+        .category-circle { width: 75px; height: 75px; background-color: var(--gray-bg); border-radius: 50%; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color); padding: 10px; }
+        .category-circle img { width: 100%; height: 100%; object-fit: contain; }
+        .category-item h4 { font-size: 0.75rem; font-weight: 600; color: var(--dark-color); }
+
+        /* محصولات */
+        .products-section { max-width: 1200px; margin: 1rem auto; padding: 0 1rem 3rem 1rem; }
+        .section-header { margin-bottom: 1rem; }
+        .section-header h2 { font-size: 1.25rem; font-weight: 700; color: var(--dark-color); }
+
+        .filter-tabs { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem; margin-bottom: 1.5rem; scrollbar-width: none; }
+        .filter-tabs::-webkit-scrollbar { display: none; }
+        .filter-tab { background: var(--gray-bg); border: 1px solid var(--border-color); font-size: 0.8rem; font-weight: 600; color: var(--text-light); cursor: pointer; padding: 0.4rem 1rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+        .filter-tab.active { background-color: var(--dark-color); color: #fff; border-color: var(--dark-color); }
+
+        /* گرید محصولات مناسب صفحه موبایل (2 تایی) */
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+        .product-card { background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.8rem; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        
+        .product-image { height: 130px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.6rem; }
+        .product-image img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .product-info h3 { font-size: 0.85rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.2rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .product-category { font-size: 0.7rem; color: var(--text-light); margin-bottom: 0.4rem; }
+        
+        .price-box { display: flex; flex-direction: column; gap: 0.1rem; }
+        .price { font-weight: 700; font-size: 0.85rem; color: var(--dark-color); }
+        .old-price { font-size: 0.75rem; color: var(--text-light); text-decoration: line-through; }
+
+        footer { background-color: var(--gray-bg); border-top: 1px solid var(--border-color); padding: 2rem 1rem; text-align: center; color: var(--text-light); font-size: 0.8rem; margin-top: 2rem; }
+
+        /* مدیاکوئری برای تبلت و دسکتاپ */
+        @media (min-width: 768px) {
+            .header-container { padding: 1rem 2rem; }
+            .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+            .nav-links a { font-size: 0.9rem; color: var(--text-light); }
+            .nav-links a:hover, .nav-links a.active { color: var(--dark-color); font-weight: 600; }
+            .search-bar-container { display: none; } /* انتقال سرور به هدر در دسکتاپ */
+            .hero { padding: 4rem 2rem; }
+            .hero-container { flex-direction: row; text-align: right; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-image img { max-height: 350px; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
+            .product-card { padding: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">Mobile Iran</div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">خانه</a></li>
+                <li><a href="products.html">محصولات</a></li>
+                <li><a href="about.html">درباره ما</a></li>
+            </ul>
+
+            <div class="header-actions">
+                <a href="cart.html" class="btn-action"><i class="fa-solid fa-bag-shopping"></i></a>
+                <a href="auth.html" class="btn-action"><i class="fa-regular fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-bar-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="جستجوی قاب، کابل، شارژر..." onkeyup="handleSearch()">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>گوشی خود را ایمن و شیک نگه دارید!</h1>
+                <p>مجموعه‌ای کامل از بهترین لوازم جانبی اورجینال با کیفیت بالا.</p>
+                <a href="products.html" class="btn-primary">مشاهده همه محصولات</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1584438784894-089d6a62b8fa?auto=format&fit=crop&w=600&q=80" alt="لوازم جانبی">
+            </div>
+        </div>
+    </section>
+
+    <div class="categories-wrapper">
+        <div class="categories">
+            <div class="category-item" onclick="filterProducts('قاب‌ها (Cases)')"><div class="category-circle"><img src="https://ik.imagekit.io/MRrobat/Mobile%20iran/Generic%20Silicone%20Case%20for%20iPhone%2017%20Pro%20Max%20_%20Soft-Touch%20Shockproof%20Slim%20Protective%20Cover%20with%20Soft%20Inner%20Lining,%20Camera%20Protection%20&%20Anti-Slip%20Grip%20-%20Orange%20_%20Best%20Price%20Egypt%20_%20Cairo,%20Giza.jpg" alt="قاب"></div><h4>قاب گوشی</h4></div>
+            <div class="category-item" onclick="filterProducts('مگ‌سیف (MagSafe)')"><div class="category-circle"><img src="https://ik.imagekit.io/MRrobat/Mobile%20iran/Apple%20Magsafe%20Wireless%20Power%20Bank%20For%20Iphone%205000mah%2020w%20Fast%20Charging.jpg" alt="مگ‌سیف"></div><h4>مگ‌‌سیف</h4></div>
+            <div class="category-item" onclick="filterProducts('کابل و مبدل (Cables)')"><div class="category-circle"><img src="https://ik.imagekit.io/MRrobat/Mobile%20iran/download%20(13).jpg" alt="کابل"></div><h4>کابل شارژ</h4></div>
+            <div class="category-item" onclick="filterProducts('شارژر وایرلس (Charger)')"><div class="category-circle"><img src="https://ik.imagekit.io/MRrobat/Mobile%20iran/download%20(15).jpg" alt="شارژر"></div><h4>آداپتور</h4></div>
+            <div class="category-item" onclick="filterProducts('پاوربانک (Power Banks)')"><div class="category-circle"><img src="https://ik.imagekit.io/MRrobat/Mobile%20iran/Don't%20Board%20Your%20Next%20Flight%20Without%20This%2035W%20Fast%20Charging%20Power%20Bank.jpg" alt="پاوربانک"></div><h4>پاوربانک</h4></div>
+        </div>
+    </div>
+
+    <section class="products-section">
+        <div class="section-header"><h2 id="sectionTitle">محصولات منتخب</h2></div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterProducts('all', event)">همه</button>
+            <button class="filter-tab" onclick="filterProducts('قاب‌ها (Cases)', event)">قاب‌ها</button>
+            <button class="filter-tab" onclick="filterProducts('مگ‌سیف (MagSafe)', event)">مگ‌‌سیف</button>
+            <button class="filter-tab" onclick="filterProducts('کابل و مبدل (Cables)', event)">کابل</button>
+            <button class="filter-tab" onclick="filterProducts('شارژر وایرلس (Charger)', event)">شارژر</button>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+    </section>
+
+    <footer><p>تمامی حقوق محفوظ است | <strong>Mobile Iran</strong></p></footer>
+
+    <script>
+        // دیتای دستی محصولات (بدون نیاز به Worker و دیتابیس ابری)
+        const productsData = [
+            { id: 1, name: "قاب سیلیکونی اصل آیفون", category: "قاب‌ها (Cases)", price: "۳۵۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Generic%20Silicone%20Case%20for%20iPhone%2017%20Pro%20Max%20_%20Soft-Touch%20Shockproof%20Slim%20Protective%20Cover%20with%20Soft%20Inner%20Lining,%20Camera%20Protection%20&%20Anti-Slip%20Grip%20-%20Orange%20_%20Best%20Price%20Egypt%20_%20Cairo,%20Giza.jpg" },
+            { id: 2, name: "پاوربانک مگ‌سیف ۲۰ وات", category: "مگ‌سیف (MagSafe)", price: "۱,۲۵۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Apple%20Magsafe%20Wireless%20Power%20Bank%20For%20Iphone%205000mah%2020w%20Fast%20Charging.jpg" },
+            { id: 3, name: "کابل تایپ سی به لایتنینگ", category: "کابل و مبدل (Cables)", price: "۲۸۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/download%20(13).jpg" },
+            { id: 4, name: "شارژر دیواری سریع ۲۰ وات", category: "شارژر وایرلس (Charger)", price: "۴۹۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/download%20(15).jpg" },
+            { id: 5, name: "پاوربانک ۳۵ وات مسافرتی", category: "پاوربانک (Power Banks)", price: "۱,۸۹۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Don't%20Board%20Your%20Next%20Flight%20Without%20This%2035W%20Fast%20Charging%20Power%20Bank.jpg" }
+        ];
+
+        function renderProducts(items) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#86868b; padding:2rem;">محصولی یافت نشد.</p>';
+                return;
+            }
+
+            items.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => { alert(`مشاهده محصول: ${p.name}`); };
+                card.innerHTML = `
+                    <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <div class="product-category">${p.category}</div>
+                        <div class="price-box">
+                            <span class="price">${p.price} تومان</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProducts(category, event) {
+            if(event) {
+                document.querySelectorAll('.filter-tab').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+            }
+            
+            if (category === 'all') {
+                renderProducts(productsData);
+            } else {
+                const filtered = productsData.filter(p => p.category === category);
+                renderProducts(filtered);
+            }
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const filtered = productsData.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            renderProducts(filtered);
+        }
+
+        // بارگذاری اولیه
+        renderProducts(productsData);
+    </script>
+</body>
+</html>

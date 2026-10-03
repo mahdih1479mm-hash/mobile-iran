@@ -1,0 +1,34 @@
+<script>
+    const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
+
+    async function handleRegister(e) {
+        e.preventDefault();
+        const name = document.getElementById('regName').value.trim();
+        const phone = document.getElementById('regPhone').value.trim();
+
+        if (!name || !phone) {
+            alert('لطفاً همه فیلدها را پر کنید.');
+            return;
+        }
+
+        try {
+            const res = await fetch(`${API_BASE}/api/users`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone })
+            });
+
+            if (res.ok) {
+                // ذخیره وضعیت ورود در حافظه مرورگر برای نمایش نام کاربر
+                localStorage.setItem('mobile_iran_logged_in_user', name);
+                alert('ثبت‌نام با موفقیت انجام شد و وارد حساب خود شدید!');
+                location.href = 'index.html';
+            } else {
+                alert('خطا در ثبت‌نام.');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('خطا در ارتباط با سرور کلودفلر.');
+        }
+    }
+</script>

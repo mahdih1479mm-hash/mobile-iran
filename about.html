@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درباره ما | Mobile Iran</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #d2d2d7; --text-color: #333333; --text-light: #86868b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
+        body { background-color: #fff; color: var(--text-color); line-height: 1.8; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        header { background-color: #fff; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .header-container { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--dark-color); }
+        .nav-links { display: flex; gap: 1.8rem; }
+        .nav-links a { font-size: 0.95rem; color: var(--text-light); }
+        .nav-links a:hover, .nav-links a.active { color: var(--dark-color); font-weight: 500; }
+
+        .container { max-width: 900px; margin: 4rem auto; padding: 0 2rem; }
+        .about-card { background: var(--gray-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem; }
+        .about-card h1 { font-size: 2.2rem; font-weight: 800; color: var(--dark-color); margin-bottom: 1.5rem; text-align: center; }
+        .about-card p { font-size: 1.05rem; color: var(--text-color); margin-bottom: 1.2rem; text-align: justify; }
+        .features-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+        .feature-item { background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; }
+        .feature-item i { font-size: 2rem; color: var(--dark-color); margin-bottom: 0.8rem; }
+        .feature-item h3 { font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--dark-color); }
+        .feature-item p { font-size: 0.9rem; color: var(--text-light); text-align: center; }
+
+        footer { background-color: var(--gray-bg); border-top: 1px solid var(--border-color); padding: 2.5rem; text-align: center; color: var(--text-light); font-size: 0.85rem; margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Mobile Iran</div>
+            <ul class="nav-links">
+                <li><a href="index.html">خانه</a></li>
+                <li><a href="cases.html">قاب و کاور</a></li>
+                <li><a href="products.html">همه محصولات</a></li>
+                <li><a href="about.html" class="active">درباره ما</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="about-card">
+            <h1>درباره فروشگاه Mobile Iran</h1>
+            <p>فروشگاه **موبایل ایران (Mobile Iran)** از سال‌ها پیش با هدف ارائه تخصصی‌ترین و باکیفیت‌ترین لوازم جانبی موبایل، گجت‌های هوشمند و تجهیزات اورجینال آغاز به کار کرده است. ما در این مجموعه تلاش می‌کنیم تا دسترسی به بهترین برندهای جهانی قاب گوشی، کابل‌های شارژ، مگ‌سیف و پاوربانک را با منصفانه‌ترین قیمت‌ها برای شما فراهم کنیم.</p>
+            <p>اعتماد شما بزرگ‌ترین سرمایه ماست و تمام محصولات ارائه شده در این فروشگاه دارای ضمانت اصالت و سلامت فیزیکی می‌باشند.</p>
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>ضمانت اصالت کالا</h3>
+                    <p>تمامی محصولات عرضه شده اورجینال و باکیفیت بالا هستند.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h3>ارسال سریع</h3>
+                    <p>ارسال امن و سریع سفارشات به سراسر کشور در کوتاه‌ترین زمان.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-headset"></i>
+                    <h3>پشتیبانی تخصصی</h3>
+                    <p>پاسخگویی به سوالات شما در خصوص سازگاری لوازم جانبی با گوشی.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>تمامی حقوق برای فروشگاه <strong>Mobile Iran</strong> محفوظ است.</p>
+    </footer>
+</body>
+</html>

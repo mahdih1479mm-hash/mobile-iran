@@ -1,0 +1,12 @@
+name = "mobile-iran-api"
+main = "worker.js"
+compatibility_date = "2026-03-01"
+
+[vars]
+ENVIRONMENT = "production"
+
+# تنظیمات پایگاه داده D1 (پس از ساخت دیتابیس در کلودفلر، شناسه آن را اینجا قرار می‌دهید)
+[[d1_databases]]
+binding = "DB"
+database_name = "mobile_iran_db"
+database_id = "94222d85-a7bc-4e76-ab8d-80178a756dfd"

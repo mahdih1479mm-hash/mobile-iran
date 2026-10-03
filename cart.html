@@ -1,0 +1,21 @@
+const SHIPPING_COST = 180000; // هزینه ارسال ثابت
+
+function calculateCartTotals() {
+    let cart = JSON.parse(localStorage.getItem('mobile_iran_cart')) || [];
+    let itemsTotal = 0;
+
+    cart.forEach(item => {
+        // پاک کردن کاراکترهای اضافی قیمت مثل حروف تومان و کاما برای محاسبه ریاضی
+        let cleanPrice = parseInt(item.price.toString().replace(/[^0-9]/g, '')) || 0;
+        itemsTotal += cleanPrice * item.qty;
+    });
+
+    let finalTotal = itemsTotal + SHIPPING_COST;
+
+    // نمایش در بخش‌های مربوطه در صفحه فاکتور (مطابق تصویر)
+    document.getElementById('itemsTotalText').innerText = itemsTotal.toLocaleString() + ' تومان';
+    document.getElementById('shippingText').innerText = SHIPPING_COST.toLocaleString() + ' تومان';
+    document.getElementById('finalTotalText').innerText = finalTotal.toLocaleString() + ' تومان';
+}
+
+window.addEventListener('DOMContentLoaded', calculateCartTotals);

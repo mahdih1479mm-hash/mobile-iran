@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قاب و کاور | Mobile Iran</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #d2d2d7; --text-color: #333333; --text-light: #86868b; --danger-color: #ff3b30; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
+        body { background-color: #fff; color: var(--text-color); line-height: 1.5; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        header { background-color: #fff; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .header-container { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--dark-color); }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-links a { font-size: 0.9rem; color: var(--text-light); }
+        .nav-links a:hover, .nav-links a.active { color: var(--dark-color); font-weight: 600; }
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
+        .btn-action { background: var(--gray-bg); border: 1px solid var(--border-color); padding: 0.4rem 0.9rem; border-radius: 20px; font-size: 0.85rem; color: var(--dark-color); }
+
+        .container { max-width: 1200px; margin: 3rem auto; padding: 0 2rem; }
+        .page-title { font-size: 2rem; font-weight: 700; margin-bottom: 2rem; text-align: center; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+        .product-card { background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; position: relative; cursor: pointer; transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+        .badge { position: absolute; top: 1rem; left: 1rem; font-size: 0.7rem; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; color: #fff; }
+        .badge.sold-out { background-color: var(--dark-color); }
+        .badge.hot { background-color: var(--danger-color); }
+
+        .product-image { height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+        .product-image img { max-height: 100%; max-width: 100%; object-fit: contain; }
+        .product-info h3 { font-size: 0.95rem; font-weight: 600; color: var(--dark-color); margin-bottom: 0.3rem; }
+        .product-category { font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.6rem; }
+        .price { font-weight: 700; font-size: 0.95rem; color: var(--dark-color); }
+
+        footer { background-color: var(--gray-bg); border-top: 1px solid var(--border-color); padding: 2.5rem; text-align: center; color: var(--text-light); font-size: 0.85rem; margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Mobile Iran</div>
+            <ul class="nav-links">
+                <li><a href="index.html">خانه</a></li>
+                <li><a href="cases.html" class="active">قاب و کاور</a></li>
+                <li><a href="products.html">همه محصولات</a></li>
+                <li><a href="about.html">درباره ما</a></li>
+            </ul>
+            <div class="header-actions">
+                <a href="cart.html" class="btn-action"><i class="fa-solid fa-bag-shopping"></i> سبد خرید</a>
+                <a href="auth.html" class="btn-action"><i class="fa-regular fa-user"></i> ورود / ثبت‌نام</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">بخش تخصصی قاب و کاور گوشی</h1>
+        <div class="products-grid" id="casesGrid"></div>
+    </div>
+
+    <footer><p>تمامی حقوق برای فروشگاه <strong>Mobile Iran</strong> محفوظ است.</p></footer>
+
+    <script>
+        let products = JSON.parse(localStorage.getItem('mobile_iran_products')) || [];
+        const grid = document.getElementById('casesGrid');
+        let casesList = products.filter(p => p.category.includes('قاب') || p.category.includes('Cases'));
+
+        if (casesList.length === 0) {
+            grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#86868b; padding:2rem;">هنوز قاب و کاوری ثبت نشده است.</p>';
+        } else {
+            casesList.forEach(p => {
+                let badgeHTML = p.badge ? `<span class="badge ${p.badge === 'SOLD OUT' ? 'sold-out' : 'hot'}">${p.badge}</span>` : '';
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.onclick = () => { location.href = `product-detail.html?id=${p.id}`; };
+                card.innerHTML = `
+                    ${badgeHTML}
+                    <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <div class="product-category">${p.category}</div>
+                        <div class="price">${p.price}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
