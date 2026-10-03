@@ -349,18 +349,18 @@
         </main>
     </div>
 
-    <script>
-        const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
+const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
+        
+        // متغیر سراسری برای نگهداری لیست محصولات جهت استفاده در تابع ویرایش
+        let allAdminProducts = [];
 
         // ورود به پنل
         function handleLogin(e) {
             e.preventDefault();
             const pass = document.getElementById('passInput').value;
-            // بررسی رمز عبور جدید
             if (pass === '@mobileIRAN') { 
                 document.getElementById('login-wrapper').style.display = 'none';
                 document.getElementById('dashboard-wrapper').style.display = 'flex';
-                // دریافت اطلاعات پس از ورود موفق
                 fetchUsers();
                 fetchProductsAdmin();
                 fetchOrders();
@@ -414,16 +414,16 @@
         async function fetchProductsAdmin() {
             try {
                 const res = await fetch(`${API_BASE}/api/products`);
-                const products = await res.json();
+                allAdminProducts = await res.json(); // ذخیره در متغیر سراسری
                 const tbody = document.getElementById('productsTable');
                 tbody.innerHTML = '';
 
-                if (products.length === 0) {
+                if (allAdminProducts.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">محصولی یافت نشد</td></tr>';
                     return;
                 }
 
-                products.forEach(p => {
+                allAdminProducts.forEach(p => {
                     const badgeClass = p.section === 'special' ? 'badge-special' : 'badge-normal';
                     const sectionName = p.section === 'special' ? 'پیشنهاد ویژه' : 'عادی';
                     tbody.innerHTML += `
@@ -435,6 +435,7 @@
                             <td><span class="badge ${badgeClass}">${sectionName}</span></td>
                             <td>
                                 <div class="action-btns">
+                                    <button class="icon-btn edit" onclick="editProduct(${p.id})" style="color: var(--accent-color); border-color: var(--accent-color);"><i class="fa-solid fa-pen"></i></button>
                                     <button class="icon-btn del" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash-can"></i></button>
                                 </div>
                             </td>
@@ -448,7 +449,12 @@
 
         async function saveProduct(e) {
             e.preventDefault();
-            const newProduct = {
+            
+            const productId = document.getElementById('p_id').value; // چک میکنیم ایدی داریم یا نه
+            const method = productId ? 'PUT' : 'POST'; // اگر آیدی بود آپدیت میکنیم، اگر نبود میسازیم
+            const url = productId ? `${API_BASE}/api/products/${productId}` : `${API_BASE}/api/products`;
+
+            const productData = {
                 name: document.getElementById('p_name').value,
                 category: document.getElementById('p_category').value,
                 price: document.getElementById('p_price').value,
@@ -459,14 +465,15 @@
             };
 
             try {
-                const res = await fetch(`${API_BASE}/api/products`, {
-                    method: 'POST',
+                const res = await fetch(url, {
+                    method: method,
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newProduct)
+                    body: JSON.stringify(productData)
                 });
                 const result = await res.json();
+                
                 if(result.success) {
-                    alert('محصول با موفقیت ذخیره شد!');
+                    alert(productId ? 'محصول با موفقیت ویرایش شد!' : 'محصول با موفقیت ذخیره شد!');
                     resetForm();
                     fetchProductsAdmin(); // آپدیت جدول
                 } else {
@@ -475,6 +482,29 @@
             } catch (error) {
                 alert('خطا در ارتباط با سرور.');
             }
+        }
+
+        // تابع جدید برای قرار دادن اطلاعات محصول در فرم جهت ویرایش
+        function editProduct(id) {
+            const product = allAdminProducts.find(p => p.id === id);
+            if (!product) return;
+
+            // اسکرول نرم به سمت فرم
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            document.getElementById('formTitle').innerText = 'ویرایش محصول: ' + product.name;
+            document.getElementById('formTitle').style.color = 'var(--accent-color)';
+            
+            document.getElementById('p_id').value = product.id;
+            document.getElementById('p_name').value = product.name;
+            document.getElementById('p_category').value = product.category;
+            document.getElementById('p_price').value = product.price;
+            document.getElementById('p_discount').value = product.discount_price || '';
+            document.getElementById('p_section').value = product.section;
+            document.getElementById('p_image').value = product.image;
+            document.getElementById('p_desc').value = product.description || '';
+            
+            document.querySelector('.btn-save').innerText = 'ثبت تغییرات';
         }
 
         async function deleteProduct(id) {
@@ -495,6 +525,9 @@
         function resetForm() {
             document.getElementById('productForm').reset();
             document.getElementById('p_id').value = '';
+            document.getElementById('formTitle').innerText = 'افزودن محصول جدید';
+            document.getElementById('formTitle').style.color = 'var(--dark-color)';
+            document.querySelector('.btn-save').innerText = 'ذخیره محصول';
         }
 
         // --- بخش سفارشات ---
@@ -526,6 +559,5 @@
                 console.error("Error fetching orders", err);
             }
         }
-    </script>
 </body>
 </html>
