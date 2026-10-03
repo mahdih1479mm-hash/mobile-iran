@@ -26,7 +26,7 @@
         .header-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; }
         .logo { font-size: 1.2rem; font-weight: 800; color: var(--dark-color); }
         
-        .nav-links { display: none; } /* در موبایل منو مخفی یا کشویی می‌شود */
+        .nav-links { display: none; }
         
         .header-actions { display: flex; align-items: center; gap: 0.6rem; }
         .btn-action { background: var(--gray-bg); border: 1px solid var(--border-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--dark-color); position: relative; }
@@ -66,7 +66,7 @@
 
         /* گرید محصولات مناسب صفحه موبایل (2 تایی) */
         .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
-        .product-card { background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.8rem; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-card { background: #fff; border: 1px solid var(--border-color); border-radius: 12px; padding: 0.8rem; position: relative; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
         
         .product-image { height: 130px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.6rem; }
         .product-image img { max-height: 100%; max-width: 100%; object-fit: contain; }
@@ -75,17 +75,15 @@
         
         .price-box { display: flex; flex-direction: column; gap: 0.1rem; }
         .price { font-weight: 700; font-size: 0.85rem; color: var(--dark-color); }
-        .old-price { font-size: 0.75rem; color: var(--text-light); text-decoration: line-through; }
 
         footer { background-color: var(--gray-bg); border-top: 1px solid var(--border-color); padding: 2rem 1rem; text-align: center; color: var(--text-light); font-size: 0.8rem; margin-top: 2rem; }
 
-        /* مدیاکوئری برای تبلت و دسکتاپ */
         @media (min-width: 768px) {
             .header-container { padding: 1rem 2rem; }
             .nav-links { display: flex; gap: 1.5rem; align-items: center; }
             .nav-links a { font-size: 0.9rem; color: var(--text-light); }
             .nav-links a:hover, .nav-links a.active { color: var(--dark-color); font-weight: 600; }
-            .search-bar-container { display: none; } /* انتقال سرور به هدر در دسکتاپ */
+            .search-bar-container { display: none; }
             .hero { padding: 4rem 2rem; }
             .hero-container { flex-direction: row; text-align: right; }
             .hero-content h1 { font-size: 2.5rem; }
@@ -160,7 +158,6 @@
     <footer><p>تمامی حقوق محفوظ است | <strong>Mobile Iran</strong></p></footer>
 
     <script>
-        // دیتای دستی محصولات (بدون نیاز به Worker و دیتابیس ابری)
         const productsData = [
             { id: 1, name: "قاب سیلیکونی اصل آیفون", category: "قاب‌ها (Cases)", price: "۳۵۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Generic%20Silicone%20Case%20for%20iPhone%2017%20Pro%20Max%20_%20Soft-Touch%20Shockproof%20Slim%20Protective%20Cover%20with%20Soft%20Inner%20Lining,%20Camera%20Protection%20&%20Anti-Slip%20Grip%20-%20Orange%20_%20Best%20Price%20Egypt%20_%20Cairo,%20Giza.jpg" },
             { id: 2, name: "پاوربانک مگ‌سیف ۲۰ وات", category: "مگ‌سیف (MagSafe)", price: "۱,۲۵۰,۰۰۰", image: "https://ik.imagekit.io/MRrobat/Mobile%20iran/Apple%20Magsafe%20Wireless%20Power%20Bank%20For%20Iphone%205000mah%2020w%20Fast%20Charging.jpg" },
@@ -181,7 +178,6 @@
             items.forEach(p => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                // اصلاح شده: باز کردن صفحه جزئیات محصول
                 card.onclick = () => { window.location.href = `product-detail.html?id=${p.id}`; };
                 card.innerHTML = `
                     <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
@@ -217,8 +213,8 @@
             renderProducts(filtered);
         }
 
-        // بارگذاری اولیه
         renderProducts(productsData);
     </script>
 </body>
 </html>
+```[cite: 10]
