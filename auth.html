@@ -48,31 +48,31 @@
         </div>
 
         <!-- فرم ورود -->
-        <form id="loginForm" class="form-section active" onsubmit="handleAuth(event, 'ورود')">
+        <form id="loginForm" class="form-section active" onsubmit="loginUser(event)">
             <div class="form-group">
                 <label>ایمیل یا شماره موبایل</label>
-                <input type="text" required placeholder="09123456789">
+                <input type="text" id="login_phone" required placeholder="09123456789">
             </div>
             <div class="form-group">
                 <label>رمز عبور</label>
-                <input type="password" required placeholder="••••••••">
+                <input type="password" id="login_pass" required placeholder="••••••••">
             </div>
             <button type="submit" class="btn-submit">ورود به حساب</button>
         </form>
 
         <!-- فرم ثبت‌نام -->
-        <form id="registerForm" class="form-section" onsubmit="handleAuth(event, 'ثبت‌نام')">
+        <form id="registerForm" class="form-section" onsubmit="registerUser(event)">
             <div class="form-group">
                 <label>نام و نام خانوادگی</label>
-                <input type="text" required placeholder="علی حیدری">
+                <input type="text" id="reg_name" required placeholder="علی حیدری">
             </div>
             <div class="form-group">
                 <label>شماره موبایل یا ایمیل</label>
-                <input type="text" required placeholder="09123456789">
+                <input type="text" id="reg_phone" required placeholder="09123456789">
             </div>
             <div class="form-group">
                 <label>رمز عبور</label>
-                <input type="password" required placeholder="••••••••">
+                <input type="password" id="reg_pass" required placeholder="••••••••">
             </div>
             <button type="submit" class="btn-submit">ساخت حساب کاربری</button>
         </form>
@@ -94,18 +94,63 @@
             }
         }
 
-        // بررسی پارامتر URL برای حالت ثبت‌نام پیش‌‌فرض (مثلا ?mode=register)
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('mode') === 'register') {
-                switchTab('register');
+            if (urlParams.get('mode') === 'register') { switchTab('register'); }
+        }
+
+        // تابع ورود
+        async function loginUser(e) {
+            e.preventDefault();
+            const data = {
+                phone_or_email: document.getElementById('login_phone').value,
+                password: document.getElementById('login_pass').value
+            };
+
+            try {
+                let res = await fetch('/api/users/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                let result = await res.json();
+                if (result.success) {
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    alert('با موفقیت وارد شدید!');
+                    window.location.href = 'index.html';
+                } else {
+                    alert(result.error || 'اطلاعات ورود نادرست است.');
+                }
+            } catch (err) {
+                alert('خطا در ارتباط با سرور.');
             }
         }
 
-        function handleAuth(e, type) {
+        // تابع ثبت‌نام
+        async function registerUser(e) {
             e.preventDefault();
-            alert(`عملیات ${type} با موفقیت انجام شد!`);
-            window.location.href = 'index.html';
+            const data = {
+                name: document.getElementById('reg_name').value,
+                phone_or_email: document.getElementById('reg_phone').value,
+                password: document.getElementById('reg_pass').value
+            };
+
+            try {
+                let res = await fetch('/api/users/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                let result = await res.json();
+                if (result.success) {
+                    alert('ثبت‌نام با موفقیت انجام شد! اکنون می‌توانید وارد شوید.');
+                    switchTab('login');
+                } else {
+                    alert('خطا: ممکن است این کاربر قبلاً ثبت شده باشد.');
+                }
+            } catch (err) {
+                alert('خطا در ارتباط با سرور.');
+            }
         }
     </script>
 </body>
