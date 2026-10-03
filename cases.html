@@ -65,31 +65,43 @@
 
     <footer><p>تمامی حقوق برای فروشگاه <strong>Mobile Iran</strong> محفوظ است.</p></footer>
 
-    <script>
-        let products = JSON.parse(localStorage.getItem('mobile_iran_products')) || [];
+<script>
+        const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
         const grid = document.getElementById('casesGrid');
-        let casesList = products.filter(p => p.category.includes('قاب') || p.category.includes('Cases'));
 
-        if (casesList.length === 0) {
-            grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#86868b; padding:2rem;">هنوز قاب و کاوری ثبت نشده است.</p>';
-        } else {
-            casesList.forEach(p => {
-                let badgeHTML = p.badge ? `<span class="badge ${p.badge === 'SOLD OUT' ? 'sold-out' : 'hot'}">${p.badge}</span>` : '';
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.onclick = () => { location.href = `product-detail.html?id=${p.id}`; };
-                card.innerHTML = `
-                    ${badgeHTML}
-                    <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
-                    <div class="product-info">
-                        <h3>${p.name}</h3>
-                        <div class="product-category">${p.category}</div>
-                        <div class="price">${p.price}</div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
+        async function loadCases() {
+            try {
+                const res = await fetch(`${API_BASE}/api/products`);
+                const products = await res.json();
+                const casesList = products.filter(p => p.category.includes('قاب') || p.category.includes('Cases'));
+                
+                if (casesList.length === 0) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center; color:#86868b; padding:2rem;">هنوز قاب و کاوری ثبت نشده است.</p>';
+                } else {
+                    grid.innerHTML = '';
+                    casesList.forEach(p => {
+                        let badgeHTML = p.badge ? `<span class="badge ${p.badge === 'SOLD OUT' ? 'sold-out' : 'hot'}">${p.badge}</span>` : '';
+                        const card = document.createElement('div');
+                        card.className = 'product-card';
+                        card.onclick = () => { location.href = `product-detail.html?id=${p.id}`; };
+                        card.innerHTML = `
+                            ${badgeHTML}
+                            <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
+                            <div class="product-info">
+                                <h3>${p.name}</h3>
+                                <div class="product-category">${p.category}</div>
+                                <div class="price">${p.price} تومان</div>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+                }
+            } catch (err) {
+                grid.innerHTML = '<p style="text-align:center; width:100%;">خطا در ارتباط با سرور.</p>';
+            }
         }
+        
+        window.onload = loadCases;
     </script>
 </body>
 </html>
