@@ -4,26 +4,51 @@
     <meta charset="UTF-8">
     <title>پنل مدیریت - موبایل ایران</title>
     <style>
-        body { font-family: Tahoma, sans-serif; background: #f4f4f9; padding: 20px; }
-        form { background: #fff; padding: 20px; border-radius: 8px; max-width: 400px; margin: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        body { font-family: Tahoma, sans-serif; background: #f4f4f9; padding: 40px; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box, .admin-panel { background: #fff; padding: 30px; border-radius: 8px; width: 100%; max-width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .admin-panel { display: none; }
         input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        button { background: #28a745; color: white; padding: 10px; border: none; width: 100%; border-radius: 4px; cursor: pointer; }
+        button { background: #28a745; color: white; padding: 10px; border: none; width: 100%; border-radius: 4px; cursor: pointer; font-weight: bold; }
         button:hover { background: #218838; }
+        .error { color: red; font-size: 0.85rem; text-align: center; }
     </style>
 </head>
 <body>
-    <h2 style="text-align: center;">افزودن محصول جدید</h2>
-    <form id="product-form">
-        <input type="text" id="name" placeholder="نام محصول" required>
-        <input type="number" id="price" placeholder="قیمت (تومان)" required>
-        <input type="text" id="category" placeholder="دسته‌بندی">
-        <input type="text" id="image" placeholder="لینک تصویر">
-        <textarea id="description" placeholder="توضیحات محصول"></textarea>
-        <button type="submit">ثبت و ذخیره در دیتابیس</button>
-    </form>
+
+    <!-- فرم ورود رمز ادمین -->
+    <div id="loginBox" class="login-box">
+        <h3 style="text-align: center; margin-bottom: 20px;">ورود به پنل مدیریت</h3>
+        <input type="password" id="adminPass" placeholder="رمز عبور ادمین را وارد کنید">
+        <button onclick="checkPassword()">ورود</button>
+        <p id="errorMsg" class="error"></p>
+    </div>
+
+    <!-- پنل اصلی مدیریت (پس از ورود صحیح نمایش داده می‌شود) -->
+    <div id="adminPanel" class="admin-panel">
+        <h2 style="text-align: center; margin-bottom: 20px;">افزودن محصول جدید</h2>
+        <form id="product-form">
+            <input type="text" id="name" placeholder="نام محصول" required>
+            <input type="text" id="price" placeholder="قیمت (مثلاً ۳۵۰,۰۰۰)" required>
+            <input type="text" id="category" placeholder="دسته‌بندی">
+            <input type="text" id="image" placeholder="لینک تصویر">
+            <textarea id="description" placeholder="توضیحات محصول"></textarea>
+            <button type="submit">ثبت و ذخیره در دیتابیس</button>
+        </form>
+    </div>
 
     <script>
         const API_BASE = "https://mobile-iran.mahdih1479mm.workers.dev";
+        const ADMIN_SECRET = "admin123"; // رمزی که می‌توانید خودتان تغییر دهید
+
+        function checkPassword() {
+            const pass = document.getElementById("adminPass").value;
+            if (pass === ADMIN_SECRET) {
+                document.getElementById("loginBox").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+            } else {
+                document.getElementById("errorMsg").innerText = "رمز عبور اشتباه است!";
+            }
+        }
 
         document.getElementById("product-form").addEventListener("submit", async (e) => {
             e.preventDefault();
