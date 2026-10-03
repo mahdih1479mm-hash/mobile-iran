@@ -32,9 +32,9 @@ export default {
           `INSERT INTO products (name, category, price, discount_price, section, image, description)
            VALUES (?, ?, ?, ?, ?, ?, ?)`
         ).bind(
-          body.name,
+          body.name || "",
           body.category || "",
-          body.price,
+          body.price || "",
           body.discount_price || "",
           body.section || "normal",
           body.image || "",
@@ -49,22 +49,22 @@ export default {
         await env.DB.prepare(
           `UPDATE products SET name=?, category=?, price=?, discount_price=?, section=?, image=?, description=? WHERE id=?`
         ).bind(
-          body.name,
+          body.name || "",
           body.category || "",
-          body.price,
+          body.price || "",
           body.discount_price || "",
           body.section || "normal",
           body.image || "",
           body.description || "",
           id
         ).run();
-        return jsonRes({ success: true, message: "محصول با موفقیت به‌روزرسانی شد" });
+        return jsonRes({ success: true, message: "محصول به‌روزرسانی شد" });
       }
 
       if (path.startsWith("/api/products/") && method === "DELETE") {
         const id = path.split("/").pop();
         await env.DB.prepare("DELETE FROM products WHERE id=?").bind(id).run();
-        return jsonRes({ success: true, message: "محصول با موفقیت حذف شد" });
+        return jsonRes({ success: true, message: "محصول حذف شد" });
       }
 
       // ==================== بخش کاربران ====================
@@ -72,7 +72,11 @@ export default {
         const body = await request.json();
         await env.DB.prepare(
           "INSERT INTO users (name, phone_or_email, password) VALUES (?, ?, ?)"
-        ).bind(body.name, body.phone_or_email, body.password).run();
+        ).bind(
+          body.name || "", 
+          body.phone_or_email || "", 
+          body.password || ""
+        ).run();
         return jsonRes({ success: true, message: "ثبت‌نام با موفقیت انجام شد" });
       }
 
@@ -80,7 +84,7 @@ export default {
         const body = await request.json();
         const { results } = await env.DB.prepare(
           "SELECT id, name, phone_or_email FROM users WHERE phone_or_email=? AND password=?"
-        ).bind(body.phone_or_email, body.password).all();
+        ).bind(body.phone_or_email || "", body.password || "").all();
 
         if (results && results.length > 0) {
           return jsonRes({ success: true, user: results[0] });
@@ -102,9 +106,31 @@ export default {
 
       if (path === "/api/orders" && method === "POST") {
         const body = await request.json();
+        
+        // همسان‌سازی نام فیلدها با آنچه cart.html می‌فرستد
+        // استفاده از || "" برای جلوگیری از پاس دادن مقدار undefined به دیتابیس
+        const userName = body.customerName || body.user_name || "کاربر ناشناس";
+        const phone = body.mobile || body.phone || "نامشخص";
+        const totalAmount = body.totalPrice || body.total_amount || 0;
+        
+        // ما اطلاعات آدرس و روش ارسال را داخل فیلد items جا می‌دهیم تا نیاز به تغییر ساختار دیتابیس نباشد
+        const orderDetails = {
+            cartItems: body.items || [],
+            address: body.address || "",
+            postalCode: body.postalCode || "",
+            shippingMethod: body.shippingMethod || "",
+            trackingCode: body.trackingCode || ""
+        };
+
         await env.DB.prepare(
           "INSERT INTO orders (user_name, phone, total_amount, items) VALUES (?, ?, ?, ?)"
-        ).bind(body.user_name, body.phone, body.total_amount, JSON.stringify(body.items || [])).run();
+        ).bind(
+          userName, 
+          phone, 
+          totalAmount, 
+          JSON.stringify(orderDetails)
+        ).run();
+        
         return jsonRes({ success: true, message: "سفارش ثبت شد" });
       }
 
