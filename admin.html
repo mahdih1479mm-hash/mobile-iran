@@ -58,19 +58,25 @@
         tr:hover td { background: var(--gray-bg); }
         
         .thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); }
+        
+        /* Badges */
         .badge { display: inline-block; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
         .badge-pending { background: #fff3e0; color: var(--warning); }
         .badge-completed { background: #e8f5e9; color: var(--success); }
+        .badge-cancelled { background: #ffebee; color: var(--danger); }
+        .badge-failed { background: #fce4ec; color: #c2185b; }
         
         .order-details-box { font-size: 0.85rem; color: var(--text-light); line-height: 1.8; margin-top: 0.5rem; background: var(--gray-bg); padding: 0.8rem; border-radius: 8px; border: 1px dashed var(--border-color); }
         .order-details-box strong { color: var(--dark-color); }
 
         .action-btns { display: flex; gap: 0.5rem; flex-wrap: wrap;}
         .icon-btn { padding: 0.4rem 0.8rem; border-radius: 8px; border: 1px solid var(--border-color); background: #fff; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;}
-        .icon-btn.complete { color: var(--success); border-color: var(--success); }
-        .icon-btn.complete:hover { background: var(--success); color: #fff; }
         .icon-btn.reply { color: var(--accent-color); border-color: var(--accent-color); }
         .icon-btn.reply:hover { background: var(--accent-color); color: #fff; }
+
+        /* Status Select */
+        .status-select { padding: 0.4rem 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); font-family: inherit; font-size: 0.8rem; font-weight: 600; outline: none; cursor: pointer; background: #fff; color: var(--dark-color); }
+        .status-select:focus { border-color: var(--accent-color); }
     </style>
 </head>
 <body>
@@ -94,7 +100,7 @@
                 <ul class="menu-list">
                     <li class="menu-item active" onclick="switchPanel('products', event)"><i class="fa-solid fa-box"></i> محصولات</li>
                     <li class="menu-item" onclick="switchPanel('orders', event)"><i class="fa-solid fa-bag-shopping"></i> سفارشات</li>
-                    <li class="menu-item" onclick="switchPanel('reviews', event)"><i class="fa-solid fa-comments"></i> نظرات کاربران</li>
+                    <li class="menu-item" onclick="switchPanel('reviews', event)"><i class="fa-solid fa-comments"></i> نظرات</li>
                     <li class="menu-item" onclick="switchPanel('users', event)"><i class="fa-solid fa-users"></i> کاربران</li>
                 </ul>
             </div>
@@ -138,7 +144,7 @@
                 <div class="section-header">بررسی سفارشات</div>
                 <div class="glass-card table-wrapper">
                     <table>
-                        <thead><tr><th>اطلاعات مشتری</th><th>جزئیات سفارش و ارسال</th><th>مبلغ کل</th><th>وضعیت</th><th>عملیات</th></tr></thead>
+                        <thead><tr><th>اطلاعات مشتری</th><th>جزئیات سفارش و ارسال</th><th>مبلغ کل</th><th>وضعیت فعلی</th><th>تغییر وضعیت</th></tr></thead>
                         <tbody id="ordersTable"></tbody>
                     </table>
                 </div>
@@ -183,6 +189,7 @@
         }
 
         function logout() { location.reload(); }
+        
         function switchPanel(name, event) {
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
@@ -197,7 +204,7 @@
             fetchReviews();
         }
 
-        // --- بخش محصولات ---
+        // --- محصولات ---
         async function fetchProductsAdmin() {
             const res = await fetch(`${API_BASE}/api/products`);
             allAdminProducts = await res.json();
@@ -246,7 +253,7 @@
         }
         function resetForm() { document.getElementById('productForm').reset(); document.getElementById('p_id').value = ''; document.getElementById('formTitle').innerText = 'افزودن محصول جدید'; }
 
-        // --- بخش سفارشات (آپدیت شده با جزئیات سبد خرید) ---
+        // --- سفارشات با منوی کشویی ---
         async function fetchOrders() {
             const res = await fetch(`${API_BASE}/api/orders`);
             const orders = await res.json();
@@ -269,28 +276,48 @@
                         </div>`;
                 } catch(e) {}
 
-                const isCompleted = order.status === 'completed';
-                const statusBadge = isCompleted ? '<span class="badge badge-completed">تکمیل و ارسال شده</span>' : '<span class="badge badge-pending">در حال بررسی</span>';
-                const actionBtn = isCompleted ? '-' : `<button class="icon-btn complete" onclick="completeOrder(${order.id})"><i class="fa-solid fa-check"></i> تکمیل سفارش</button>`;
+                let badgeHTML = '';
+                switch (order.status) {
+                    case 'completed': badgeHTML = '<span class="badge badge-completed">تکمیل و ارسال شده</span>'; break;
+                    case 'cancelled': badgeHTML = '<span class="badge badge-cancelled">لغو شده</span>'; break;
+                    case 'failed': badgeHTML = '<span class="badge badge-failed">واریزی ناموفق</span>'; break;
+                    default: badgeHTML = '<span class="badge badge-pending">در حال بررسی</span>';
+                }
+
+                // منوی کشویی وضعیت‌ها
+                const selectMenu = `
+                    <select class="status-select" onchange="changeOrderStatus(${order.id}, this.value)">
+                        <option value="pending" ${order.status === 'pending' || !order.status ? 'selected' : ''}>در حال بررسی</option>
+                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تکمیل سفارش</option>
+                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>لغو سفارش</option>
+                        <option value="failed" ${order.status === 'failed' ? 'selected' : ''}>واریزی ناموفق</option>
+                    </select>
+                `;
 
                 tbody.innerHTML += `<tr>
                     <td><b>${order.user_name}</b><br><span style="font-size:0.8rem; color:var(--text-light);">${order.phone}</span><br><span style="font-size:0.75rem;">${date}</span></td>
                     <td style="min-width: 280px;">${detailsHTML}</td>
                     <td><b>${order.total_amount.toLocaleString()} تومان</b></td>
-                    <td>${statusBadge}</td>
-                    <td>${actionBtn}</td>
+                    <td>${badgeHTML}</td>
+                    <td>${selectMenu}</td>
                 </tr>`;
             });
         }
 
-        async function completeOrder(id) {
-            if(confirm('آیا سفارش به مشتری ارسال شده و وضعیت آن تکمیل شود؟')) {
-                await fetch(`${API_BASE}/api/orders/${id}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status: 'completed'}) });
-                fetchOrders();
+        async function changeOrderStatus(id, newStatus) {
+            if(confirm('آیا از تغییر وضعیت این سفارش مطمئن هستید؟')) {
+                await fetch(`${API_BASE}/api/orders/${id}`, { 
+                    method: 'PUT', 
+                    headers: {'Content-Type':'application/json'}, 
+                    body: JSON.stringify({status: newStatus}) 
+                });
+                fetchOrders(); // بروزرسانی جدول و برچسب رنگی
+            } else {
+                fetchOrders(); // اگر ادمین لغو کرد، منوی کشویی به حالت قبلی برگردد
             }
         }
 
-        // --- بخش نظرات ---
+        // --- نظرات ---
         async function fetchReviews() {
             const res = await fetch(`${API_BASE}/api/reviews`);
             const reviews = await res.json();
@@ -306,9 +333,7 @@
                     <td>${r.comment}</td>
                     <td style="color:var(--accent-color); font-size:0.85rem;">${replyText}</td>
                     <td>${badge}</td>
-                    <td>
-                        <button class="icon-btn reply" onclick="replyToReview(${r.id})"><i class="fa-solid fa-reply"></i> ${isReplied ? 'ویرایش پاسخ' : 'ثبت پاسخ'}</button>
-                    </td>
+                    <td><button class="icon-btn reply" onclick="replyToReview(${r.id})"><i class="fa-solid fa-reply"></i> ${isReplied ? 'ویرایش پاسخ' : 'ثبت پاسخ'}</button></td>
                 </tr>`;
             });
         }
@@ -321,7 +346,7 @@
             }
         }
 
-        // --- بخش کاربران ---
+        // --- کاربران ---
         async function fetchUsers() {
             const res = await fetch(`${API_BASE}/api/users`);
             const users = await res.json();
