@@ -15,22 +15,29 @@ export default {
       // دریافت لیست محصولات
       if (url.pathname === "/api/products" && request.method === "GET") {
         const { results } = await env.DB.prepare("SELECT * FROM products").all();
-        return Response.json(results, { headers: corsHeaders });
+        return new Response(JSON.stringify(results), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
       }
 
-      // افزودن محصول جدید (برای پنل ادمین)
+      // افزودن محصول جدید (توسط ادمین)
       if (url.pathname === "/api/products" && request.method === "POST") {
-        const body = await request.json();
+        const data = await request.json();
         await env.DB.prepare(
-          "INSERT INTO products (name, category, price, image, description) VALUES (?, ?, ?, ?, ?)"
-        ).bind(body.name, body.category, body.price, body.image, body.description).run();
+          "INSERT INTO products (name, price, category, image, description) VALUES (?, ?, ?, ?, ?)"
+        ).bind(data.name, data.price, data.category, data.image, data.description).run();
         
-        return Response.json({ success: true, message: "محصول با موفقیت اضافه شد" }, { headers: corsHeaders });
+        return new Response(JSON.stringify({ success: true, message: "محصول با موفقیت اضافه شد" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
       }
 
-      return new Response("مسیری یافت نشد", { status: 404, headers: corsHeaders });
+      return new Response("Not Found", { status: 404, headers: corsHeaders });
     } catch (err) {
-      return Response.json({ error: err.message }, { status: 500, headers: corsHeaders });
+      return new Response(JSON.stringify({ error: err.message }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" }
+      });
     }
-  },
+  }
 };
