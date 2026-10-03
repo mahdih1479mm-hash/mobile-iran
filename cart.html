@@ -126,6 +126,8 @@
     <footer><p>تمامی حقوق محفوظ است | <strong>Mobile Iran</strong></p></footer>
 
     <script>
+        const API_URL = 'https://mobile-iran-api.mahdih1479mm.workers.dev';
+
         const SHIPPING_COST_POST = 180000;
         let currentShippingCost = SHIPPING_COST_POST; // پیش‌فرض روی پست
         let finalPayableAmount = 0; // برای دکمه کپی مبلغ
@@ -163,7 +165,7 @@
             let rightColHtml = `
                 <div>
                     <div class="guide-banner">
-                        <i class="fa-solid fa-circle-info"></i> <strong>راهنمای ثبت سفارش:</strong> 
+                        <i class="fa-solid fa-circle-info"></i> <b>راهنمای ثبت سفارش:</b> 
                         لطفا پس از بررسی سبد خرید، اطلاعات پستی خود را با دقت وارد نمایید. سپس مبلغ نهایی را به شماره کارت اعلام شده در کادر سمت چپ واریز کرده و "شماره پیگیری تراکنش" را در فیلد مربوطه وارد کنید. نتیجه بررسی فیش و وضعیت ارسال از طریق <b>پیامک</b> به شما اطلاع‌رسانی خواهد شد.
                     </div>
                     
@@ -220,12 +222,12 @@
                         <h3 class="section-title">روش ارسال</h3>
                         <div class="shipping-options">
                             <label class="radio-label">
-                                <input type="radio" name="shipping" value="post" checked onchange="updateShipping(this.value)">
+                                <input type="radio" name="shipping" value="پست پیشتاز" checked onchange="updateShipping('post')">
                                 <span>پست پیشتاز</span>
                                 <span class="shipping-desc">${formatNumber(SHIPPING_COST_POST)} تومان</span>
                             </label>
                             <label class="radio-label">
-                                <input type="radio" name="shipping" value="snapp" onchange="updateShipping(this.value)">
+                                <input type="radio" name="shipping" value="پیک اسنپ" onchange="updateShipping('snapp')">
                                 <span>پیک اسنپ (فقط تهران)</span>
                                 <span class="shipping-desc">پس‌کرایه (پرداخت در محل)</span>
                             </label>
@@ -325,9 +327,10 @@
             }
             localStorage.setItem('mobileIranCart', JSON.stringify(cart));
             renderCart();
-            // اگر کاربر روش ارسال را قبلا عوض کرده بود، دوباره بررسی شود
             const selectedShipping = document.querySelector('input[name="shipping"]:checked');
-            if(selectedShipping) updateShipping(selectedShipping.value);
+            if(selectedShipping) {
+                updateShipping(selectedShipping.value === 'پست پیشتاز' ? 'post' : 'snapp');
+            }
         }
 
         // حذف محصول
@@ -337,12 +340,14 @@
             renderCart();
         }
 
-        // پردازش و ارسال نهایی فرم
-        function submitOrder() {
+        // پردازش و ارسال نهایی فرم به سرور ابری
+        async function submitOrder() {
             const name = document.getElementById('cus_name').value.trim();
             const mobile = document.getElementById('cus_mobile').value.trim();
+            const email = document.getElementById('cus_email').value.trim();
             const address = document.getElementById('cus_address').value.trim();
             const postal = document.getElementById('cus_postal').value.trim();
+            const shippingMethod = document.querySelector('input[name="shipping"]:checked').value;
             const tracking = document.getElementById('transaction_id').value.trim();
 
             if(!name || !mobile || !address || !postal) {
@@ -354,14 +359,47 @@
                 return;
             }
 
-            // در اینجا اطلاعات به دیتابیس شما (بک‌اند) ارسال می‌شود
-            // چون این یک نسخه استاتیک است، صرفاً پیام موفقیت نمایش داده می‌شود
-            
-            alert(`سفارش شما با موفقیت ثبت شد!\n\nاطلاعات جهت بررسی به سیستم ارسال شد. نتیجه تایید پرداخت و مراحل ارسال کالا، از طریق پیامک به شماره ${mobile} اطلاع‌رسانی خواهد شد.`);
-            
-            // پاک کردن سبد خرید بعد از ثبت موفق
-            localStorage.removeItem('mobileIranCart');
-            window.location.href = "index.html"; // بازگشت به صفحه اصلی
+            let itemsTotal = 0;
+            cart.forEach(item => {
+                let englishString = persianToEnglishNumber(item.price.toString());
+                let cleanPrice = parseInt(englishString.replace(/[^0-9]/g, '')) || 0;
+                itemsTotal += cleanPrice * item.qty;
+            });
+            const totalAmount = itemsTotal + currentShippingCost;
+
+            const orderData = {
+                customerName: name,
+                mobile: mobile,
+                email: email,
+                address: address,
+                postalCode: postal,
+                shippingMethod: shippingMethod,
+                trackingCode: tracking,
+                items: cart,
+                totalPrice: totalAmount
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/orders`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    alert(`سفارش شما با موفقیت ثبت شد!\n\nکد پیگیری سفارش: ${result.orderId || 'ثبت شد'}\nنتیجه تایید پرداخت و مراحل ارسال کالا، از طریق پیامک به شماره ${mobile} اطلاع‌رسانی خواهد شد.`);
+                    
+                    localStorage.removeItem('mobileIranCart');
+                    window.location.href = "index.html"; 
+                } else {
+                    alert(result.error || 'خطا در ثبت سفارش. لطفا دوباره تلاش کنید.');
+                }
+            } catch (error) {
+                console.error('Network Error:', error);
+                alert('خطا در ارتباط با سرور ابری.');
+            }
         }
 
         window.addEventListener('DOMContentLoaded', renderCart);
