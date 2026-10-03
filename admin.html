@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>داشبورد مدیریت | Mobile Iran</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="[https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css](https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css)" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
     <style>
         :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #e5e5ea; --text-light: #86868b; --blue: #0071e3; --red: #ff3b30; --green: #34c759; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
         body { background-color: var(--gray-bg); color: var(--dark-color); overflow-x: hidden; }
         
-        /* فرم ورود ادمین */
+        /* صفحه ورود ادمین */
         #login-section { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
         .login-box { background: #fff; padding: 2.5rem 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 350px; text-align: center; border: 1px solid var(--border-color); }
         .login-box h2 { margin-bottom: 1.5rem; font-weight: 800; }
@@ -32,7 +32,6 @@
         .panel { display: none; background: #fff; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-color); }
         .panel.active { display: block; }
         
-        /* فرم‌ها و جداول */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
         .form-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; font-weight: 600; }
         .form-group input, .form-group select { width: 100%; padding: 0.7rem; border: 1px solid var(--border-color); border-radius: 10px; outline: none; }
@@ -53,7 +52,7 @@
 </head>
 <body>
 
-    <!-- صفحه ورود مدیریت -->
+    <!-- ورود ادمین -->
     <div id="login-section">
         <div class="login-box">
             <h2>ورود مدیریت</h2>
@@ -64,7 +63,7 @@
         </div>
     </div>
 
-    <!-- داشبورد مدیریت -->
+    <!-- داشبورد اصلی -->
     <div id="dashboard-section">
         <aside class="sidebar">
             <h1>Mobile Iran <br><span style="font-size:0.8rem; color:#86868b">پنل مدیریت</span></h1>
@@ -76,7 +75,7 @@
 
         <main class="main-content">
             
-            <!-- تب مدیریت محصولات -->
+            <!-- محصولات -->
             <div id="panel-products" class="panel active">
                 <h2 style="margin-bottom: 1.5rem;">مدیریت محصولات</h2>
                 
@@ -117,7 +116,7 @@
                 </table>
             </div>
 
-            <!-- تب سفارشات -->
+            <!-- سفارشات -->
             <div id="panel-orders" class="panel">
                 <h2 style="margin-bottom: 1.5rem;">سفارشات ثبت شده</h2>
                 <table>
@@ -134,7 +133,7 @@
                 </table>
             </div>
 
-            <!-- تب کاربران -->
+            <!-- کاربران -->
             <div id="panel-users" class="panel">
                 <h2 style="margin-bottom: 1.5rem;">لیست کاربران</h2>
                 <table>
@@ -154,9 +153,12 @@
     </div>
 
     <script>
+        // آدرس سرور ابری کلادفلر شما
+        const API_BASE = "[https://mobile-iran-api.mahdih1479mm.workers.dev](https://mobile-iran-api.mahdih1479mm.workers.dev)";
+
         function checkLogin() {
             const pass = document.getElementById('adminPass').value;
-            if (pass === 'admin123') { // رمز عبور ادمین
+            if (pass === 'admin123') {
                 document.getElementById('login-section').style.display = 'none';
                 document.getElementById('dashboard-section').style.display = 'block';
                 loadProducts();
@@ -183,15 +185,14 @@
             if(tab === 'users') loadUsers();
         }
 
-        // --- مدیریت محصولات ---
         let currentProducts = [];
 
         async function loadProducts() {
             try {
-                let res = await fetch('/api/products');
+                let res = await fetch(`${API_BASE}/api/products`);
                 currentProducts = await res.json();
                 renderProductsTable();
-            } catch (err) { console.error(err); }
+            } catch (err) { console.error("خطا در لود محصولات:", err); }
         }
 
         function renderProductsTable() {
@@ -230,7 +231,7 @@
             };
 
             const method = id ? 'PUT' : 'POST';
-            const url = id ? `/api/products/${id}` : '/api/products';
+            const url = id ? `${API_BASE}/api/products/${id}` : `${API_BASE}/api/products`;
 
             try {
                 let res = await fetch(url, {
@@ -238,12 +239,15 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
-                if(res.ok) {
-                    alert('با موفقیت ذخیره شد!');
+                let result = await res.json();
+                if(res.ok && result.success) {
+                    alert('محصول با موفقیت ذخیره شد!');
                     resetForm();
                     loadProducts();
+                } else {
+                    alert('خطا در ذخیره‌سازی: ' + (result.error || 'خطای نا مشخص'));
                 }
-            } catch (err) { alert('خطا در ذخیره‌سازی ابری'); }
+            } catch (err) { alert('خطا در ارتباط با سرور ابری کلادفلر.'); }
         }
 
         function editProduct(id) {
@@ -265,9 +269,9 @@
         async function deleteProduct(id) {
             if(confirm('آیا از حذف این محصول اطمینان دارید؟')) {
                 try {
-                    await fetch(`/api/products/${id}`, { method: 'DELETE' });
+                    await fetch(`${API_BASE}/api/products/${id}`, { method: 'DELETE' });
                     loadProducts();
-                } catch(err) { alert('خطا در حذف'); }
+                } catch(err) { alert('خطا در حذف محصول'); }
             }
         }
 
@@ -277,10 +281,9 @@
             document.getElementById('formTitle').innerText = 'افزودن محصول جدید';
         }
 
-        // --- بارگذاری سفارشات ---
         async function loadOrders() {
             try {
-                let res = await fetch('/api/orders');
+                let res = await fetch(`${API_BASE}/api/orders`);
                 let orders = await res.json();
                 const tbody = document.getElementById('ordersTableBody');
                 tbody.innerHTML = '';
@@ -298,10 +301,9 @@
             } catch (err) { console.error(err); }
         }
 
-        // --- بارگذاری کاربران ---
         async function loadUsers() {
             try {
-                let res = await fetch('/api/users');
+                let res = await fetch(`${API_BASE}/api/users`);
                 let users = await res.json();
                 const tbody = document.getElementById('usersTableBody');
                 tbody.innerHTML = '';
