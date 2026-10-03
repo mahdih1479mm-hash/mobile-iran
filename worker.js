@@ -20,14 +20,12 @@ export default {
       const path = url.pathname;
       const method = request.method;
 
-      // ==================== مدیریت محصولات ====================
-      // ۱. دریافت همه محصولات
+      // ==================== بخش محصولات ====================
       if (path === "/api/products" && method === "GET") {
         const { results } = await env.DB.prepare("SELECT * FROM products ORDER BY id DESC").all();
-        return jsonRes(results);
+        return jsonRes(results || []);
       }
 
-      // ۲. افزودن محصول جدید
       if (path === "/api/products" && method === "POST") {
         const body = await request.json();
         await env.DB.prepare(
@@ -45,7 +43,6 @@ export default {
         return jsonRes({ success: true, message: "محصول با موفقیت اضافه شد" });
       }
 
-      // ۳. ویرایش محصول
       if (path.startsWith("/api/products/") && method === "PUT") {
         const id = path.split("/").pop();
         const body = await request.json();
@@ -64,15 +61,13 @@ export default {
         return jsonRes({ success: true, message: "محصول با موفقیت به‌روزرسانی شد" });
       }
 
-      // ۴. حذف محصول
       if (path.startsWith("/api/products/") && method === "DELETE") {
         const id = path.split("/").pop();
         await env.DB.prepare("DELETE FROM products WHERE id=?").bind(id).run();
         return jsonRes({ success: true, message: "محصول با موفقیت حذف شد" });
       }
 
-      // ==================== مدیریت کاربران ====================
-      // ۱. ثبت‌نام کاربر
+      // ==================== بخش کاربران ====================
       if (path === "/api/users/register" && method === "POST") {
         const body = await request.json();
         await env.DB.prepare(
@@ -81,7 +76,6 @@ export default {
         return jsonRes({ success: true, message: "ثبت‌نام با موفقیت انجام شد" });
       }
 
-      // ۲. ورود کاربر
       if (path === "/api/users/login" && method === "POST") {
         const body = await request.json();
         const { results } = await env.DB.prepare(
@@ -91,24 +85,21 @@ export default {
         if (results && results.length > 0) {
           return jsonRes({ success: true, user: results[0] });
         } else {
-          return jsonRes({ success: false, error: "نام کاربری یا رمز عبور اشتباه است" }, 401);
+          return jsonRes({ success: false, error: "اطلاعات ورود اشتباه است" }, 401);
         }
       }
 
-      // ۳. دریافت لیست کاربران برای ادمین
       if (path === "/api/users" && method === "GET") {
         const { results } = await env.DB.prepare("SELECT id, name, phone_or_email, created_at FROM users ORDER BY id DESC").all();
-        return jsonRes(results);
+        return jsonRes(results || []);
       }
 
-      // ==================== مدیریت سفارشات ====================
-      // ۱. دریافت سفارشات برای ادمین
+      // ==================== بخش سفارشات ====================
       if (path === "/api/orders" && method === "GET") {
         const { results } = await env.DB.prepare("SELECT * FROM orders ORDER BY id DESC").all();
-        return jsonRes(results);
+        return jsonRes(results || []);
       }
 
-      // ۲. ثبت سفارش جدید توسط کاربر
       if (path === "/api/orders" && method === "POST") {
         const body = await request.json();
         await env.DB.prepare(
