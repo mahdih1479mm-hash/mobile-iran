@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ورود / ثبت‌نام | Mobile Iran</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="[https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css](https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css)" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
     <style>
         :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #e5e5ea; --text-light: #86868b; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
@@ -47,7 +47,7 @@
             <button class="tab" onclick="switchTab('register')">ثبت‌نام</button>
         </div>
 
-        <!-- فرم ورود -->
+        <!-- ورود -->
         <form id="loginForm" class="form-section active" onsubmit="loginUser(event)">
             <div class="form-group">
                 <label>ایمیل یا شماره موبایل</label>
@@ -60,7 +60,7 @@
             <button type="submit" class="btn-submit">ورود به حساب</button>
         </form>
 
-        <!-- فرم ثبت‌نام -->
+        <!-- ثبت‌نام -->
         <form id="registerForm" class="form-section" onsubmit="registerUser(event)">
             <div class="form-group">
                 <label>نام و نام خانوادگی</label>
@@ -81,6 +81,8 @@
     </div>
 
     <script>
+        const API_BASE = "[https://mobile-iran-api.mahdih1479mm.workers.dev](https://mobile-iran-api.mahdih1479mm.workers.dev)";
+
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.form-section').forEach(f => f.classList.remove('active'));
@@ -99,7 +101,6 @@
             if (urlParams.get('mode') === 'register') { switchTab('register'); }
         }
 
-        // تابع ورود
         async function loginUser(e) {
             e.preventDefault();
             const data = {
@@ -108,7 +109,7 @@
             };
 
             try {
-                let res = await fetch('/api/users/login', {
+                let res = await fetch(`${API_BASE}/api/users/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
@@ -126,7 +127,6 @@
             }
         }
 
-        // تابع ثبت‌نام
         async function registerUser(e) {
             e.preventDefault();
             const data = {
@@ -136,7 +136,7 @@
             };
 
             try {
-                let res = await fetch('/api/users/register', {
+                let res = await fetch(`${API_BASE}/api/users/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
