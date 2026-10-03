@@ -2,193 +2,100 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پنل مدیریت | Mobile Iran</title>
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdار/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root { 
-            --dark-color: #1d1d1f; 
-            --gray-bg: #f5f5f7; 
-            --border-color: #e5e5ea; 
-            --text-color: #1d1d1f; 
-            --text-light: #86868b; 
-            --accent-color: #007aff;
-            --success: #34c759;
-            --danger: #ff3b30;
-            --warning: #ff9500;
-        }
+        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #e5e5ea; --text-light: #86868b; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
-        body { background-color: var(--gray-bg); color: var(--text-color); display: flex; min-height: 100vh; }
-
-        /* سایدبار */
-        aside { width: 260px; background: #fff; border-left: 1px solid var(--border-color); display: flex; flex-direction: column; position: fixed; height: 100vh; right: 0; top: 0; z-index: 100; }
-        .sidebar-brand { padding: 1.5rem; font-size: 1.2rem; font-weight: 800; border-bottom: 1px solid var(--border-color); color: var(--dark-color); }
-        .sidebar-menu { list-style: none; padding: 1rem 0; flex: 1; }
-        .sidebar-menu li a { display: flex; align-items: center; gap: 0.8rem; padding: 0.8rem 1.5rem; color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
-        .sidebar-menu li a:hover, .sidebar-menu li a.active { background: var(--gray-bg); color: var(--accent-color); border-right: 4px solid var(--accent-color); }
-        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); }
-        .btn-logout { background: none; border: none; color: var(--danger); font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
-
-        /* محتوای اصلی */
-        main { flex: 1; margin-right: 260px; padding: 2rem; }
-        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .page-title { font-size: 1.5rem; font-weight: 800; }
+        body { background-color: var(--gray-bg); color: var(--dark-color); padding: 2rem 1rem; }
+        .admin-container { max-width: 800px; margin: 0 auto; background: #fff; padding: 2rem; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+        .top-bar h2 { font-size: 1.2rem; font-weight: 800; }
+        .auth-buttons { display: flex; gap: 0.5rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; transition: background 0.2s; }
+        .btn-login { background: #fff; color: var(--dark-color); }
+        .btn-login:hover { background: var(--gray-bg); }
+        .btn-register { background: var(--dark-color); color: #fff; border-color: var(--dark-color); }
+        .btn-register:hover { opacity: 0.9; }
         
-        /* جدول سفارشات */
-        .card { background: #fff; border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.02); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.9rem; }
-        th, td { padding: 1rem; border-bottom: 1px solid var(--border-color); }
-        th { font-weight: 700; color: var(--text-light); background: var(--gray-bg); }
-        
-        .badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; display: inline-block; }
-        .badge-pending { background: #fff8e6; color: var(--warning); }
-        .badge-success { background: #e8f8ec; color: var(--success); }
-        .badge-danger { background: #fdeeea; color: var(--danger); }
-
-        .btn-action { background: var(--accent-color); color: #fff; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
-        .btn-action:hover { opacity: 0.9; }
-
-        .hidden { display: none !important; }
-
-        @media (max-width: 768px) {
-            aside { width: 70px; }
-            aside .sidebar-brand, aside .sidebar-menu span, aside .sidebar-footer span { display: none; }
-            main { margin-right: 70px; padding: 1rem; }
-        }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; font-weight: 600; color: var(--dark-color); }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--border-color); border-radius: 10px; font-size: 0.9rem; outline: none; background: #fff; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--dark-color); }
+        .btn-submit { background: #0071e3; color: #fff; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 1rem; font-size: 0.95rem; transition: background 0.2s; }
+        .btn-submit:hover { background: #0077ed; }
+        .back-link { display: inline-block; margin-top: 1rem; font-size: 0.85rem; color: var(--text-light); text-decoration: none; }
+        .back-link:hover { color: var(--dark-color); }
     </style>
 </head>
 <body>
 
-    <aside>
-        <div class="sidebar-brand">مدیریت موبایل ایران</div>
-        <ul class="sidebar-menu">
-            <li><a href="#" class="active"><i class="fa-solid fa-list-check"></i> <span>مدیریت سفارش‌ها</span></a></li>
-            <li><a href="index.html" target="_blank"><i class="fa-solid fa-store"></i> <span>مشاهده سایت</span></a></li>
-        </ul>
-        <div class="sidebar-footer">
-            <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> <span>خروج</span></button>
-        </div>
-    </aside>
-
-    <main>
-        <div class="page-header">
-            <h1 class="page-title">لیست سفارش‌های مشتریان</h1>
-            <button class="btn-action" onclick="fetchOrders()"><i class="fa-solid fa-rotate"></i> به‌‌روزرسانی</button>
+    <div class="admin-container">
+        <div class="top-bar">
+            <h2>مدیریت محصولات - Mobile Iran</h2>
+            <div class="auth-buttons">
+                <a href="auth.html" class="btn btn-login"><i class="fa-regular fa-user"></i> ورود</a>
+                <a href="auth.html?mode=register" class="btn btn-register">ثبت‌نام</a>
+            </div>
         </div>
 
-        <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>کد سفارش</th>
-                        <th>مشتری</th>
-                        <th>موبایل</th>
-                        <th>مبلغ کل (تومان)</th>
-                        <th>کد پیگیری واریز</th>
-                        <th>وضعیت</th>
-                        <th>عملیات</th>
-                    </tr>
-                </thead>
-                <tbody id="orders-table-body">
-                    <tr>
-                        <td colspan="7" style="text-align: center; color: var(--text-light);">در حال بارگذاری سفارش‌ها...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
+        <form id="addProductForm" onsubmit="submitProduct(event)">
+            <div class="form-group">
+                <label>نام محصول</label>
+                <input type="text" id="name" required placeholder="مثلا قاب سیلیکونی اصل آیفون">
+            </div>
+            <div class="form-group">
+                <label>دسته‌بندی</label>
+                <input type="text" id="category" required placeholder="قاب‌ها (Cases)">
+            </div>
+            <div class="form-group">
+                <label>قیمت (تومان)</label>
+                <input type="text" id="price" required placeholder="۳۵۰,۰۰۰">
+            </div>
+            <div class="form-group">
+                <label>لینک تصویر</label>
+                <input type="text" id="image" required placeholder="https://example.com/image.jpg">
+            </div>
+            <div class="form-group">
+                <label>توضیحات کوتاه</label>
+                <textarea id="description" rows="3" placeholder="توضیحات محصول..."></textarea>
+            </div>
+            <button type="submit" class="btn-submit">افزودن محصول به دیتابیس ابری</button>
+        </form>
+
+        <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-right"></i> بازگشت به صفحه اصلی</a>
+    </div>
 
     <script>
-        const API_URL = 'https://mobile-iran-api.mahdih1479mm.workers.dev';
-        const token = localStorage.getItem('mobileIranToken');
-
-        // بررسی اینکه آیا کاربر لاگین کرده است یا خیر
-        if (!token) {
-            alert('لطفا ابتدا وارد حساب کاربری خود شوید.');
-            window.location.href = 'auth.html';
-        }
-
-        async function fetchOrders() {
-            try {
-                const response = await fetch(`${API_URL}/api/admin/orders`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (response.status === 401 || response.status === 403) {
-                    alert('دسترسی غیرمجاز یا اتمام اعتبار نشست.');
-                    window.location.href = 'auth.html';
-                    return;
-                }
-
-                const orders = await response.json();
-                const tbody = document.getElementById('orders-table-body');
-                tbody.innerHTML = '';
-
-                if (!orders || orders.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-light);">هنوز سفارشی ثبت نشده است.</td></tr>`;
-                    return;
-                }
-
-                orders.forEach(order => {
-                    let badgeClass = 'badge-pending';
-                    let statusText = order.status || 'در انتظار بررسی';
-                    
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${order.id || order.orderId || '---'}</td>
-                            <td><b>${order.customerName}</b></td>
-                            <td>${order.mobile}</td>
-                            <td>${Number(order.totalPrice).toLocaleString()}</td>
-                            <td><code>${order.trackingCode}</code></td>
-                            <td><span class="badge ${badgeClass}">${statusText}</span></td>
-                            <td>
-                                <button class="btn-action" onclick="updateOrderStatus('${order.id || order.orderId}')">تایید سفارش</button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (error) {
-                console.error('Error fetching orders:', error);
-                document.getElementById('orders-table-body').innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--danger);">خطا در دریافت اطلاعات از سرور.</td></tr>`;
-            }
-        }
-
-        async function updateOrderStatus(orderId) {
-            const newStatus = prompt('وضعیت جدید سفارش را وارد کنید (مثلا: تایید شده / ارسال شده):', 'تایید شده');
-            if (!newStatus) return;
+        async function submitProduct(e) {
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('name').value,
+                category: document.getElementById('category').value,
+                price: document.getElementById('price').value,
+                image: document.getElementById('image').value,
+                description: document.getElementById('description').value
+            };
 
             try {
-                const response = await fetch(`${API_URL}/api/admin/orders/${orderId}`, {
-                    method: 'PUT',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` 
-                    },
-                    body: JSON.stringify({ status: newStatus })
+                let response = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
                 });
-
-                if (response.ok) {
-                    alert('وضعیت سفارش با موفقیت به‌روزرسانی شد.');
-                    fetchOrders();
+                let result = await response.json();
+                if (result.success) {
+                    alert('محصول با موفقیت به دیتابیس ابری اضافه شد!');
+                    document.getElementById('addProductForm').reset();
                 } else {
-                    const err = await response.json();
-                    alert(err.error || 'خطا در ویرایش وضعیت سفارش.');
+                    alert('خطا: ' + (result.error || 'ثبت نشد'));
                 }
-            } catch (error) {
-                console.error('Error updating order:', error);
-                alert('خطا در ارتباط با سرور.');
+            } catch (err) {
+                alert('خطا در ارتباط با سرور ابری');
             }
         }
-
-        function logout() {
-            localStorage.removeItem('mobileIranToken');
-            localStorage.removeItem('mobileIranUser');
-            window.location.href = 'auth.html';
-        }
-
-        window.addEventListener('DOMContentLoaded', fetchOrders);
     </script>
 </body>
 </html>
