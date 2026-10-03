@@ -3,321 +3,452 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داشبورد مدیریت | Mobile Iran</title>
-    <link href="[https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css](https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css)" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <title>پنل مدیریت | Mobile Iran</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #e5e5ea; --text-light: #86868b; --blue: #0071e3; --red: #ff3b30; --green: #34c759; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
-        body { background-color: var(--gray-bg); color: var(--dark-color); overflow-x: hidden; }
-        
-        /* صفحه ورود ادمین */
-        #login-section { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
-        .login-box { background: #fff; padding: 2.5rem 2rem; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 350px; text-align: center; border: 1px solid var(--border-color); }
-        .login-box h2 { margin-bottom: 1.5rem; font-weight: 800; }
-        .input-group { margin-bottom: 1rem; text-align: right; }
-        .input-group input { width: 100%; padding: 0.8rem; border: 1px solid var(--border-color); border-radius: 10px; outline: none; }
-        .btn-primary { background: var(--blue); color: #fff; border: none; padding: 0.8rem; border-radius: 10px; width: 100%; cursor: pointer; font-weight: bold; }
-        
-        /* داشبورد */
-        #dashboard-section { display: none; min-height: 100vh; }
-        .sidebar { width: 250px; background: #fff; border-left: 1px solid var(--border-color); position: fixed; right: 0; top: 0; bottom: 0; padding: 1.5rem 1rem; }
-        .sidebar h1 { font-size: 1.2rem; font-weight: 800; margin-bottom: 2rem; text-align: center; color: var(--dark-color); }
-        .nav-btn { width: 100%; text-align: right; background: none; border: none; padding: 0.8rem 1rem; margin-bottom: 0.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; color: var(--text-light); transition: 0.2s; }
-        .nav-btn:hover { background: var(--gray-bg); color: var(--dark-color); }
-        .nav-btn.active { background: var(--dark-color); color: #fff; }
-        .nav-btn i { margin-left: 8px; }
+        :root {
+            --bg-body: #0f1015;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-card-hover: rgba(255, 255, 255, 0.07);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-blue: #0A84FF;
+            --accent-green: #30D158;
+            --accent-red: #FF453A;
+            --accent-orange: #FF9F0A;
+            --text-main: #f5f5f7;
+            --text-muted: #8e8e93;
+            --sidebar-width: 260px;
+        }
 
-        .main-content { margin-right: 250px; padding: 2rem; }
-        .panel { display: none; background: #fff; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border-color); }
-        .panel.active { display: block; }
-        
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; font-weight: 600; }
-        .form-group input, .form-group select { width: 100%; padding: 0.7rem; border: 1px solid var(--border-color); border-radius: 10px; outline: none; }
-        .form-group.full { grid-column: 1 / -1; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
-        th, td { padding: 1rem; text-align: right; border-bottom: 1px solid var(--border-color); }
-        th { color: var(--text-light); font-weight: 600; }
-        .action-btn { background: none; border: none; cursor: pointer; padding: 0.4rem; margin-left: 0.3rem; border-radius: 6px; }
-        .btn-edit { color: var(--blue); }
-        .btn-delete { color: var(--red); }
-        .btn-edit:hover { background: rgba(0, 113, 227, 0.1); }
-        .btn-delete:hover { background: rgba(255, 59, 48, 0.1); }
-        
-        .badge { padding: 0.3rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
-        .badge-pending { background: #fff5eb; color: #ff9500; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+
+        /* --- صفحه ورود شیشه‌ای (Glassmorphism) --- */
+        #login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, rgba(10, 132, 255, 0.15), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(255, 69, 58, 0.1), transparent 40%);
+            padding: 1rem;
+        }
+
+        .login-card {
+            background: rgba(22, 23, 29, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .login-card .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(10, 132, 255, 0.1);
+            border: 1px solid rgba(10, 132, 255, 0.3);
+            color: var(--accent-blue);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .login-card h2 { font-weight: 800; font-size: 1.4rem; margin-bottom: 0.4rem; }
+        .login-card p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2rem; }
+
+        .input-box { position: relative; margin-bottom: 1.2rem; }
+        .input-box input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-box input:focus { border-color: var(--accent-blue); box-shadow: 0 0 12px rgba(10, 132, 255, 0.25); }
+        .input-box i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+        .btn-glow {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3);
+        }
+        .btn-glow:hover { background: #0077e6; transform: translateY(-1px); }
+
+        /* --- داشبورد اصلی --- */
+        #dashboard-wrapper { display: none; min-height: 100vh; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: rgba(22, 23, 29, 0.9);
+            border-left: 1px solid var(--border-color);
+            position: fixed;
+            right: 0; top: 0; bottom: 0;
+            padding: 2rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2.5rem; }
+        .brand-logo {
+            width: 40px; height: 40px;
+            background: var(--accent-blue);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.2rem;
+        }
+        .brand-text h3 { font-size: 1.05rem; font-weight: 800; }
+        .brand-text span { font-size: 0.75rem; color: var(--text-muted); }
+
+        .menu-list { list-style: none; }
+        .menu-item {
+            display: flex; align-items: center; gap: 0.8rem;
+            padding: 0.85rem 1rem;
+            color: var(--text-muted);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            transition: all 0.2s;
+        }
+        .menu-item:hover { background: var(--bg-card-hover); color: var(--text-main); }
+        .menu-item.active { background: rgba(10, 132, 255, 0.15); color: var(--accent-blue); border: 1px solid rgba(10, 132, 255, 0.2); }
+
+        .btn-logout {
+            display: flex; align-items: center; gap: 0.8rem;
+            padding: 0.85rem 1rem;
+            color: var(--accent-red);
+            background: rgba(255, 69, 58, 0.08);
+            border: 1px solid rgba(255, 69, 58, 0.15);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .btn-logout:hover { background: rgba(255, 69, 58, 0.18); }
+
+        .content-area { margin-right: var(--sidebar-width); padding: 2.5rem; }
+
+        .section-header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .section-header h2 { font-size: 1.5rem; font-weight: 800; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* فرم‌ها و کارت‌ها */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+        .field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .field label { font-size: 0.82rem; color: var(--text-muted); font-weight: 600; }
+        .field input, .field select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        .field input:focus, .field select:focus { border-color: var(--accent-blue); }
+        .field.full { grid-column: 1 / -1; }
+
+        .form-actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
+        .btn-save { background: var(--accent-blue); color: #fff; padding: 0.75rem 2rem; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
+        .btn-cancel { background: transparent; color: var(--text-muted); padding: 0.75rem 1.5rem; border-radius: 10px; border: 1px solid var(--border-color); cursor: pointer; }
+
+        /* جداول مدرن */
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.9rem; }
+        th { color: var(--text-muted); padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.82rem; }
+        td { padding: 1.1rem 1rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+        .thumb { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; background: #222; }
+        .badge { display: inline-block; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .badge-normal { background: rgba(255,255,255,0.08); color: var(--text-muted); }
+        .badge-special { background: rgba(255, 159, 10, 0.15); color: var(--accent-orange); }
+        .badge-status { background: rgba(48, 209, 88, 0.15); color: var(--accent-green); }
+
+        .action-btns { display: flex; gap: 0.5rem; }
+        .icon-btn {
+            width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.03); color: var(--text-main);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;
+        }
+        .icon-btn.edit:hover { background: rgba(10, 132, 255, 0.2); color: var(--accent-blue); }
+        .icon-btn.del:hover { background: rgba(255, 69, 58, 0.2); color: var(--accent-red); }
     </style>
 </head>
 <body>
 
-    <!-- ورود ادمین -->
-    <div id="login-section">
-        <div class="login-box">
-            <h2>ورود مدیریت</h2>
-            <div class="input-group">
-                <input type="password" id="adminPass" placeholder="رمز عبور ادمین را وارد کنید">
+    <!-- ۱. صفحه ورود (Login) -->
+    <div id="login-wrapper">
+        <div class="login-card">
+            <div class="logo-icon">
+                <i class="fa-solid fa-shield-halved"></i>
             </div>
-            <button class="btn-primary" onclick="checkLogin()">ورود به پنل</button>
+            <h2>مدیریت Mobile Iran</h2>
+            <p>جهت دسترسی به داشبورد رمز عبور را وارد کنید</p>
+
+            <form onsubmit="handleLogin(event)">
+                <div class="input-box">
+                    <input type="password" id="passInput" placeholder="رمز عبور ادمین" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <button type="submit" class="btn-glow">ورود به پنل</button>
+            </form>
         </div>
     </div>
 
-    <!-- داشبورد اصلی -->
-    <div id="dashboard-section">
+    <!-- ۲. داشبورد اصلی (Dashboard) -->
+    <div id="dashboard-wrapper">
+        <!-- سایدبار -->
         <aside class="sidebar">
-            <h1>Mobile Iran <br><span style="font-size:0.8rem; color:#86868b">پنل مدیریت</span></h1>
-            <button class="nav-btn active" onclick="switchTab('products', event)"><i class="fa-solid fa-box"></i> محصولات</button>
-            <button class="nav-btn" onclick="switchTab('orders', event)"><i class="fa-solid fa-shopping-cart"></i> سفارشات</button>
-            <button class="nav-btn" onclick="switchTab('users', event)"><i class="fa-solid fa-users"></i> کاربران</button>
-            <button class="nav-btn" style="margin-top: 2rem; color: var(--red);" onclick="logout()"><i class="fa-solid fa-sign-out-alt"></i> خروج</button>
+            <div>
+                <div class="brand">
+                    <div class="brand-logo"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                    <div class="brand-text">
+                        <h3>Mobile Iran</h3>
+                        <span>پنل مدیریت فروشگاه</span>
+                    </div>
+                </div>
+
+                <ul class="menu-list">
+                    <li class="menu-item active" onclick="switchPanel('products', event)">
+                        <i class="fa-solid fa-box"></i> محصولات
+                    </li>
+                    <li class="menu-item" onclick="switchPanel('orders', event)">
+                        <i class="fa-solid fa-bag-shopping"></i> سفارشات
+                    </li>
+                    <li class="menu-item" onclick="switchPanel('users', event)">
+                        <i class="fa-solid fa-users"></i> کاربران
+                    </li>
+                </ul>
+            </div>
+
+            <button class="btn-logout" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> خروج از حساب
+            </button>
         </aside>
 
-        <main class="main-content">
-            
-            <!-- محصولات -->
-            <div id="panel-products" class="panel active">
-                <h2 style="margin-bottom: 1.5rem;">مدیریت محصولات</h2>
-                
-                <form id="productForm" onsubmit="saveProduct(event)" style="background: var(--gray-bg); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
-                    <h3 id="formTitle" style="font-size: 1rem; margin-bottom: 1rem;">افزودن محصول جدید</h3>
-                    <input type="hidden" id="editProductId">
-                    <div class="form-grid">
-                        <div class="form-group"><label>نام محصول</label><input type="text" id="p_name" required></div>
-                        <div class="form-group"><label>دسته‌بندی</label><input type="text" id="p_category" required></div>
-                        <div class="form-group"><label>قیمت اصلی (تومان)</label><input type="text" id="p_price" required></div>
-                        <div class="form-group"><label>قیمت با تخفیف (اختیاری)</label><input type="text" id="p_discount" placeholder="مثلا ۲۹۰,۰۰۰"></div>
-                        <div class="form-group">
-                            <label>بخش نمایش در سایت</label>
-                            <select id="p_section">
-                                <option value="normal">عادی</option>
-                                <option value="special">پیشنهاد ویژه (ویژه)</option>
-                                <option value="new">جدیدترین‌ها</option>
-                            </select>
+        <!-- محتوای اصلی -->
+        <main class="content-area">
+
+            <!-- تب ۱: مدیریت محصولات -->
+            <div id="panel-products" class="tab-panel active">
+                <div class="section-header">
+                    <h2>مدیریت محصولات</h2>
+                </div>
+
+                <!-- فرم افزون / ویرایش -->
+                <div class="glass-card">
+                    <h3 id="formTitle" style="font-size: 1rem; margin-bottom: 1.2rem; font-weight: 700;">افزودن محصول جدید</h3>
+                    <form id="productForm" onsubmit="saveProduct(event)">
+                        <input type="hidden" id="p_id">
+                        <div class="form-grid">
+                            <div class="field">
+                                <label>نام محصول</label>
+                                <input type="text" id="p_name" placeholder="مثلا آیفون ۱۵ پرومکس" required>
+                            </div>
+                            <div class="field">
+                                <label>دسته‌بندی</label>
+                                <input type="text" id="p_category" placeholder="گوشی موبایل / کاور" required>
+                            </div>
+                            <div class="field">
+                                <label>قیمت اصلی (تومان)</label>
+                                <input type="text" id="p_price" placeholder="۶۵,۰۰۰,۰۰۰" required>
+                            </div>
+                            <div class="field">
+                                <label>قیمت با تخفیف (اختیاری)</label>
+                                <input type="text" id="p_discount" placeholder="۶۲,۵۰۰,۰۰۰">
+                            </div>
+                            <div class="field">
+                                <label>بخش نمایش در سایت</label>
+                                <select id="p_section">
+                                    <option value="normal">عادی</option>
+                                    <option value="special">پیشنهاد ویژه</option>
+                                    <option value="new">جدیدترین محصولات</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>لینک عکس تصویر</label>
+                                <input type="text" id="p_image" placeholder="https://..." required>
+                            </div>
+                            <div class="field full">
+                                <label>توضیحات کوتاه</label>
+                                <input type="text" id="p_desc" placeholder="توضیحات مختصر درباره کلید ویژگی‌ها...">
+                            </div>
                         </div>
-                        <div class="form-group"><label>لینک تصویر</label><input type="text" id="p_image" required></div>
-                        <div class="form-group full"><label>توضیحات کوتاه</label><input type="text" id="p_desc"></div>
-                    </div>
-                    <button type="submit" class="btn-primary" style="width: auto; padding: 0.6rem 2rem;">ذخیره محصول</button>
-                    <button type="button" class="btn-primary" style="background:var(--text-light); width: auto; padding: 0.6rem 2rem;" onclick="resetForm()">انصراف</button>
-                </form>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>تصویر</th>
-                            <th>نام محصول</th>
-                            <th>قیمت / تخفیف</th>
-                            <th>بخش</th>
-                            <th>عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productsTableBody"></tbody>
-                </table>
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save">ذخیره محصول</button>
+                            <button type="button" class="btn-cancel" onclick="resetForm()">انصراف</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- جدول محصولات -->
+                <div class="glass-card table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>تصویر</th>
+                                <th>نام محصول</th>
+                                <th>دسته‌بندی</th>
+                                <th>قیمت / تخفیف</th>
+                                <th>بخش</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable">
+                            <!-- به عنوان نمونه تستی ظاهری -->
+                            <tr>
+                                <td><img src="https://via.placeholder.com/100" class="thumb"></td>
+                                <td>قاب سیلیکونی آیفون ۱۳</td>
+                                <td>کاور و قاب</td>
+                                <td>۴۵۰,۰۰۰ <br><small style="color:var(--accent-red)">۳۹۰,۰۰۰</small></td>
+                                <td><span class="badge badge-special">پیشنهاد ویژه</span></td>
+                                <td>
+                                    <div class="action-btns">
+                                        <button class="icon-btn edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button class="icon-btn del"><i class="fa-solid fa-trash-can"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- سفارشات -->
-            <div id="panel-orders" class="panel">
-                <h2 style="margin-bottom: 1.5rem;">سفارشات ثبت شده</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>شماره/تاریخ</th>
-                            <th>نام مشتری</th>
-                            <th>شماره تماس</th>
-                            <th>مبلغ کل</th>
-                            <th>وضعیت</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersTableBody"></tbody>
-                </table>
+            <!-- تب ۲: سفارشات -->
+            <div id="panel-orders" class="tab-panel">
+                <div class="section-header">
+                    <h2>سفارشات ثبت شده</h2>
+                </div>
+                <div class="glass-card table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شماره سفارش</th>
+                                <th>خریدار</th>
+                                <th>شماره تماس</th>
+                                <th>مبلغ کل</th>
+                                <th>وضعیت</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <tr>
+                                <td>#ORD-1082</td>
+                                <td>رضا محمدی</td>
+                                <td>09121112233</td>
+                                <td>۱,۲۵۰,۰۰۰ تومان</td>
+                                <td><span class="badge badge-status">تایید شده</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <!-- کاربران -->
-            <div id="panel-users" class="panel">
-                <h2 style="margin-bottom: 1.5rem;">لیست کاربران</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>شناسه</th>
-                            <th>نام و نام خانوادگی</th>
-                            <th>شماره/ایمیل</th>
-                            <th>تاریخ ثبت‌نام</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody"></tbody>
-                </table>
+            <!-- تب ۳: کاربران -->
+            <div id="panel-users" class="tab-panel">
+                <div class="section-header">
+                    <h2>لیست کاربران ثبت‌نامی</h2>
+                </div>
+                <div class="glass-card table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>شناسه</th>
+                                <th>نام کاربر</th>
+                                <th>شماره / ایمیل</th>
+                                <th>تاریخ عضویت</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <tr>
+                                <td>#USR-101</td>
+                                <td>رضا محمدی</td>
+                                <td>09121112233</td>
+                                <td>۱۴۰۵/۰۷/۱۲</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
         </main>
     </div>
 
     <script>
-        // آدرس سرور ابری کلادفلر شما
-        const API_BASE = "[https://mobile-iran-api.mahdih1479mm.workers.dev](https://mobile-iran-api.mahdih1479mm.workers.dev)";
-
-        function checkLogin() {
-            const pass = document.getElementById('adminPass').value;
-            if (pass === 'admin123') {
-                document.getElementById('login-section').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'block';
-                loadProducts();
+        // --- ورود شیک و ساده ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('passInput').value;
+            if (pass === 'admin123') { // رمز ورود ادمین
+                document.getElementById('login-wrapper').style.display = 'none';
+                document.getElementById('dashboard-wrapper').style.display = 'flex';
             } else {
                 alert('رمز عبور نادرست است!');
             }
         }
 
         function logout() {
-            document.getElementById('login-section').style.display = 'flex';
-            document.getElementById('dashboard-section').style.display = 'none';
-            document.getElementById('adminPass').value = '';
+            document.getElementById('login-wrapper').style.display = 'flex';
+            document.getElementById('dashboard-wrapper').style.display = 'none';
+            document.getElementById('passInput').value = '';
         }
 
-        function switchTab(tab, e) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            
-            e.currentTarget.classList.add('active');
-            document.getElementById('panel-' + tab).classList.add('active');
+        // --- جابجایی تب‌ها ---
+        function switchPanel(name, event) {
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
 
-            if(tab === 'products') loadProducts();
-            if(tab === 'orders') loadOrders();
-            if(tab === 'users') loadUsers();
-        }
-
-        let currentProducts = [];
-
-        async function loadProducts() {
-            try {
-                let res = await fetch(`${API_BASE}/api/products`);
-                currentProducts = await res.json();
-                renderProductsTable();
-            } catch (err) { console.error("خطا در لود محصولات:", err); }
-        }
-
-        function renderProductsTable() {
-            const tbody = document.getElementById('productsTableBody');
-            tbody.innerHTML = '';
-            currentProducts.forEach(p => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td><img src="${p.image}" width="40" height="40" style="border-radius:8px; object-fit:cover"></td>
-                        <td>${p.name}</td>
-                        <td>
-                            ${p.price}
-                            ${p.discount_price ? `<br><small style="color:var(--red)">تخفیف: ${p.discount_price}</small>` : ''}
-                        </td>
-                        <td><span class="badge" style="background:#e5e5ea; color:#1d1d1f">${p.section || 'عادی'}</span></td>
-                        <td>
-                            <button class="action-btn btn-edit" onclick="editProduct(${p.id})"><i class="fa-solid fa-pen"></i></button>
-                            <button class="action-btn btn-delete" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
-            });
-        }
-
-        async function saveProduct(e) {
-            e.preventDefault();
-            const id = document.getElementById('editProductId').value;
-            const data = {
-                name: document.getElementById('p_name').value,
-                category: document.getElementById('p_category').value,
-                price: document.getElementById('p_price').value,
-                discount_price: document.getElementById('p_discount').value,
-                section: document.getElementById('p_section').value,
-                image: document.getElementById('p_image').value,
-                description: document.getElementById('p_desc').value
-            };
-
-            const method = id ? 'PUT' : 'POST';
-            const url = id ? `${API_BASE}/api/products/${id}` : `${API_BASE}/api/products`;
-
-            try {
-                let res = await fetch(url, {
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                let result = await res.json();
-                if(res.ok && result.success) {
-                    alert('محصول با موفقیت ذخیره شد!');
-                    resetForm();
-                    loadProducts();
-                } else {
-                    alert('خطا در ذخیره‌سازی: ' + (result.error || 'خطای نا مشخص'));
-                }
-            } catch (err) { alert('خطا در ارتباط با سرور ابری کلادفلر.'); }
-        }
-
-        function editProduct(id) {
-            const p = currentProducts.find(x => x.id === id);
-            if(p) {
-                document.getElementById('editProductId').value = p.id;
-                document.getElementById('p_name').value = p.name;
-                document.getElementById('p_category').value = p.category;
-                document.getElementById('p_price').value = p.price;
-                document.getElementById('p_discount').value = p.discount_price || '';
-                document.getElementById('p_section').value = p.section || 'normal';
-                document.getElementById('p_image').value = p.image;
-                document.getElementById('p_desc').value = p.description || '';
-                document.getElementById('formTitle').innerText = 'ویرایش محصول';
-                window.scrollTo(0,0);
-            }
-        }
-
-        async function deleteProduct(id) {
-            if(confirm('آیا از حذف این محصول اطمینان دارید؟')) {
-                try {
-                    await fetch(`${API_BASE}/api/products/${id}`, { method: 'DELETE' });
-                    loadProducts();
-                } catch(err) { alert('خطا در حذف محصول'); }
-            }
+            event.currentTarget.classList.add('active');
+            document.getElementById('panel-' + name).classList.add('active');
         }
 
         function resetForm() {
             document.getElementById('productForm').reset();
-            document.getElementById('editProductId').value = '';
+            document.getElementById('p_id').value = '';
             document.getElementById('formTitle').innerText = 'افزودن محصول جدید';
         }
 
-        async function loadOrders() {
-            try {
-                let res = await fetch(`${API_BASE}/api/orders`);
-                let orders = await res.json();
-                const tbody = document.getElementById('ordersTableBody');
-                tbody.innerHTML = '';
-                orders.forEach(o => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>#ORD-${o.id}</td>
-                            <td>${o.user_name}</td>
-                            <td>${o.phone}</td>
-                            <td>${o.total_amount} تومان</td>
-                            <td><span class="badge badge-pending">${o.status || 'در حال بررسی'}</span></td>
-                        </tr>
-                    `;
-                });
-            } catch (err) { console.error(err); }
-        }
-
-        async function loadUsers() {
-            try {
-                let res = await fetch(`${API_BASE}/api/users`);
-                let users = await res.json();
-                const tbody = document.getElementById('usersTableBody');
-                tbody.innerHTML = '';
-                users.forEach(u => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${u.id}</td>
-                            <td>${u.name}</td>
-                            <td>${u.phone_or_email}</td>
-                            <td>${new Date(u.created_at).toLocaleDateString('fa-IR')}</td>
-                        </tr>
-                    `;
-                });
-            } catch (err) { console.error(err); }
+        // توابع اتصال به دیتابیس ابری فردا اضافه می‌شوند
+        function saveProduct(e) {
+            e.preventDefault();
+            alert('طراحی آماده شد! اتصال به بک‌اند فردا انجام می‌شود.');
         }
     </script>
 </body>
