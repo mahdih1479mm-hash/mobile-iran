@@ -148,11 +148,15 @@
                 <h2 class="page-title">سبد خرید شما</h2>
                 <div>`;
             
+// داخل تابع renderCart :
             cart.forEach((item, index) => {
+                // استخراج عکس اول
+                const firstImg = item.image.split(',')[0].trim();
+                
                 rightColHtml += `
                     <div class="cart-item">
                         <button class="btn-remove" onclick="removeItem(${index})"><i class="fa-solid fa-trash"></i></button>
-                        <img src="${item.image}">
+                        <img src="${firstImg}">
                         <div class="item-info">
                             <h3>${item.name}</h3><div class="item-price">${item.price} تومان</div>
                             <div class="qty-controls">
