@@ -296,7 +296,7 @@
         
         function resetForm() { document.getElementById('productForm').reset(); document.getElementById('p_id').value = ''; document.getElementById('formTitle').innerText = 'افزودن محصول جدید'; }
 
-        // --- سفارشات ---
+ // --- سفارشات ---
         async function fetchOrders() {
             const res = await fetch(`${API_BASE}/api/orders`);
             const orders = await res.json();
@@ -304,30 +304,64 @@
             tbody.innerHTML = orders.length ? '' : '<tr><td colspan="4" style="text-align:center;">سفارشی نیست</td></tr>';
             
             orders.forEach(order => {
-                let addressInfo = '-';
+                const date = new Date(order.created_at).toLocaleDateString('fa-IR');
+                let detailsHTML = 'بدون جزئیات';
+                
                 try {
+                    // استخراج اطلاعات تکمیلی از دیتابیس
                     const parsed = JSON.parse(order.items);
-                    addressInfo = `آدرس: ${parsed.address}<br><span style="color:var(--danger)">پیگیری: ${parsed.trackingCode}</span>`;
-                } catch(e) {}
+                    
+                    // ساختن لیست کالاهای خریداری شده
+                    let itemsStr = '';
+                    if (parsed.cartItems && parsed.cartItems.length > 0) {
+                        itemsStr = parsed.cartItems.map(i => 
+                            `<span style="color:var(--accent-color); font-weight:bold; font-size:0.9rem;">${i.qty} عدد</span> - ${i.name}`
+                        ).join('<br>');
+                    } else {
+                        itemsStr = 'اطلاعات کالاها ثبت نشده';
+                    }
 
+                    // ساخت باکس شکیل برای نمایش تمام اطلاعات
+                    detailsHTML = `
+                        <div style="background: var(--gray-bg); padding: 12px; border-radius: 8px; font-size: 0.85rem; line-height: 1.8; border: 1px dashed var(--border-color); text-align: right;">
+                            <strong style="color: var(--dark-color); font-size:0.9rem;"><i class="fa-solid fa-box-open"></i> اقلام سفارش:</strong><br>
+                            <div style="margin-bottom: 8px; padding-right: 5px;">${itemsStr}</div>
+                            
+                            <hr style="margin: 8px 0; border: 0; border-top: 1px solid #d2d2d7;">
+                            
+                            <strong><i class="fa-solid fa-location-dot"></i> آدرس:</strong> ${parsed.address || '-'}<br>
+                            <strong><i class="fa-solid fa-envelopes-bulk"></i> کد پستی:</strong> ${parsed.postalCode || '-'}<br>
+                            <strong><i class="fa-solid fa-truck"></i> روش ارسال:</strong> ${parsed.shippingMethod || '-'}<br>
+                            <strong style="color:var(--danger); font-size:0.9rem;"><i class="fa-solid fa-receipt"></i> پیگیری فیش: ${parsed.trackingCode || '-'}</strong>
+                        </div>
+                    `;
+                } catch(e) {
+                    detailsHTML = 'خطا در بارگذاری اطلاعات';
+                }
+
+                // منوی وضعیت سفارش
                 const selectMenu = `
                     <select class="status-select" onchange="changeOrderStatus(${order.id}, this.value)">
-                        <option value="pending" ${order.status === 'pending' || !order.status ? 'selected' : ''}>بررسی</option>
-                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تکمیل</option>
-                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>لغو</option>
+                        <option value="pending" ${order.status === 'pending' || !order.status ? 'selected' : ''}>در حال بررسی</option>
+                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تکمیل شده</option>
+                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>لغو شده</option>
                         <option value="failed" ${order.status === 'failed' ? 'selected' : ''}>واریز ناموفق</option>
                     </select>
                 `;
 
+                // ردیف جدول
                 tbody.innerHTML += `<tr>
-                    <td><b>${order.user_name}</b><br><span style="font-size:0.8rem;">${order.phone}</span></td>
-                    <td style="font-size:0.8rem; line-height:1.5;">${addressInfo}</td>
-                    <td><b>${order.total_amount.toLocaleString()}</b></td>
-                    <td>${selectMenu}</td>
+                    <td style="vertical-align: top;">
+                        <b style="font-size:1rem; color:var(--dark-color);">${order.user_name}</b><br>
+                        <span style="font-size:0.85rem; color:var(--text-light); direction:ltr; display:inline-block;">${order.phone}</span><br>
+                        <span style="font-size:0.75rem; color:var(--text-light);">${date}</span>
+                    </td>
+                    <td style="min-width: 320px; vertical-align: top;">${detailsHTML}</td>
+                    <td style="vertical-align: top;"><b>${order.total_amount.toLocaleString()} تومان</b></td>
+                    <td style="vertical-align: top;">${selectMenu}</td>
                 </tr>`;
             });
         }
-
         async function changeOrderStatus(id, newStatus) {
             if(confirm('تغییر وضعیت ثبت شود؟')) {
                 await fetch(`${API_BASE}/api/orders/${id}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({status: newStatus}) });
