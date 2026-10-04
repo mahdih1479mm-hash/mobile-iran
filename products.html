@@ -159,20 +159,24 @@
         const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
         let productsData = [];
 
-       async function fetchProducts() {
+      async function fetchProducts() {
             try {
                 const res = await fetch(`${API_BASE}/api/products`);
                 productsData = await res.json();
                 
+                // دریافت پارامترهای آدرس (URL)
                 const urlParams = new URLSearchParams(window.location.search);
                 const catParam = urlParams.get('cat');
-                const queryParam = urlParams.get('q'); // پارامتر جدید جستجو
+                const queryParam = urlParams.get('q');
                 
                 if (queryParam) {
+                    // اگر کاربر کلمه‌ای را سرچ کرده بود
                     document.getElementById('searchInput').value = queryParam;
-                    handleSearch(); // اجرای تابع جستجو
+                    document.getElementById('pageTitle').innerText = 'نتایج جستجو';
+                    handleSearch(); 
                 }
                 else if (catParam) {
+                    // اگر کاربر روی یک دسته‌بندی خاص کلیک کرده بود
                     const btn = document.querySelector(`.filter-tab[data-cat="${catParam}"]`);
                     if(btn) {
                         document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
@@ -181,11 +185,31 @@
                     }
                     renderProducts(productsData.filter(p => p.category === catParam));
                 } else {
+                    // حالت عادی (نمایش همه)
                     renderProducts(productsData);
                 }
+                
             } catch (err) {
-                document.getElementById('productsGrid').innerHTML = '<p style="grid-column: 1/-1; text-align:center;">خطا در دریافت اطلاعات.</p>';
+                document.getElementById('productsGrid').innerHTML = '<p style="grid-column: 1/-1; text-align:center;">خطا در دریافت اطلاعات از سرور.</p>';
             }
+        }
+
+        // تابع جستجوی زنده
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            
+            // برداشتن انتخاب از روی تب‌های دسته‌بندی هنگام سرچ کردن
+            document.querySelectorAll('.filter-tab').forEach(btn => btn.classList.remove('active'));
+            const allBtn = document.querySelector('.filter-tab[data-cat="all"]');
+            if(allBtn) allBtn.classList.add('active');
+            
+            // فیلتر کردن محصولات بر اساس نام یا دسته‌بندی
+            const filteredProducts = productsData.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.category.toLowerCase().includes(query)
+            );
+            
+            renderProducts(filteredProducts);
         }
         function renderProducts(items) {
             const grid = document.getElementById('productsGrid');
