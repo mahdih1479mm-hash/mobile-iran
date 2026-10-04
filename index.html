@@ -182,16 +182,20 @@
             }
         }
 
-        function renderProducts(items) {
+function renderProducts(items) {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
             if (items.length === 0) { grid.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">محصولی یافت نشد.</p>'; return; }
+            
             items.forEach(p => {
+                // فقط عکس اول را برای کارت محصول جدا می‌کنیم
+                const firstImg = p.image.split(',')[0].trim();
+                
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                card.onclick = () => { window.location.href = getSeoUrl(p); };
+                card.onclick = () => { window.location.href = `product-detail.html?id=${p.id}&name=${encodeURIComponent(p.name.replace(/\s+/g, '-'))}`; };
                 card.innerHTML = `
-                    <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
+                    <div class="product-image"><img src="${firstImg}" alt="${p.name}"></div>
                     <div class="product-info">
                         <h3>${p.name}</h3>
                         <div class="product-category">${p.category}</div>
