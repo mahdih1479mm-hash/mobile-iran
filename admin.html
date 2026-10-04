@@ -7,76 +7,181 @@
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #e5e5ea; --text-color: #1d1d1f; --text-light: #86868b; --accent-color: #007aff; --success: #34c759; --danger: #ff3b30; --warning: #ff9500; --sidebar-width: 240px; }
+        /* استایل‌های هماهنگ با تم اصلی سایت */
+        :root { 
+            --dark-color: #1d1d1f; 
+            --gray-bg: #f5f5f7; 
+            --border-color: #e5e5ea; 
+            --text-color: #1d1d1f; 
+            --text-light: #86868b; 
+            --accent-color: #007aff;
+            --success: #34c759;
+            --danger: #ff3b30;
+            --sidebar-width: 260px;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
         body { background-color: var(--gray-bg); color: var(--text-color); min-height: 100vh; overflow-x: hidden; }
 
-        /* Login */
-        #login-wrapper { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 1rem; }
-        .login-card { background: #fff; border: 1px solid var(--border-color); padding: 2.5rem 2rem; border-radius: 20px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        /* --- صفحه ورود --- */
+        #login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .login-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
         .login-card h2 { font-weight: 800; font-size: 1.4rem; color: var(--dark-color); margin-bottom: 0.4rem; }
         .login-card p { color: var(--text-light); font-size: 0.85rem; margin-bottom: 2rem; }
+
         .input-box { position: relative; margin-bottom: 1.2rem; }
-        .input-box input { width: 100%; padding: 0.9rem 1rem 0.9rem 2.8rem; background: var(--gray-bg); border: 1px solid var(--border-color); border-radius: 12px; font-size: 0.95rem; outline: none; }
+        .input-box input {
+            width: 100%;
+            padding: 0.9rem 1rem 0.9rem 2.8rem;
+            background: var(--gray-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
         .input-box input:focus { border-color: var(--accent-color); background: #fff; }
         .input-box i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light); }
-        .btn-glow { width: 100%; padding: 0.9rem; background: var(--dark-color); color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-        /* Dashboard */
+        .btn-glow {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--dark-color);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-glow:hover { opacity: 0.9; }
+
+        /* --- داشبورد اصلی --- */
         #dashboard-wrapper { display: none; min-height: 100vh; }
-        .sidebar { width: var(--sidebar-width); background: #fff; border-left: 1px solid var(--border-color); position: fixed; right: 0; top: 0; bottom: 0; padding: 2rem 1.2rem; display: flex; flex-direction: column; justify-content: space-between; }
-        .brand h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 2.5rem; }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #fff;
+            border-left: 1px solid var(--border-color);
+            position: fixed;
+            right: 0; top: 0; bottom: 0;
+            padding: 2rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .brand { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 2.5rem; }
+        .brand-text h3 { font-size: 1.2rem; font-weight: 800; color: var(--dark-color); }
+
         .menu-list { list-style: none; }
-        .menu-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.85rem 1rem; color: var(--text-light); border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; }
+        .menu-item {
+            display: flex; align-items: center; gap: 0.8rem;
+            padding: 0.85rem 1rem;
+            color: var(--text-light);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.4rem;
+            transition: all 0.2s;
+        }
         .menu-item:hover { background: var(--gray-bg); color: var(--dark-color); }
         .menu-item.active { background: #e8f4fd; color: var(--accent-color); }
-        .btn-logout { display: flex; align-items: center; gap: 0.8rem; padding: 0.85rem 1rem; color: var(--danger); background: transparent; border: 1px solid var(--border-color); border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
-        
+
+        .btn-logout {
+            display: flex; align-items: center; gap: 0.8rem;
+            padding: 0.85rem 1rem;
+            color: var(--danger);
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .btn-logout:hover { background: #fff0f0; border-color: var(--danger); }
+
         .content-area { margin-right: var(--sidebar-width); padding: 2.5rem; width: 100%; }
-        .section-header { margin-bottom: 2rem; font-size: 1.5rem; font-weight: 800; color: var(--dark-color); }
+
+        .section-header { margin-bottom: 2rem; }
+        .section-header h2 { font-size: 1.5rem; font-weight: 800; color: var(--dark-color); }
+
         .tab-panel { display: none; }
         .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards & Forms */
-        .glass-card { background: #fff; border: 1px solid var(--border-color); border-radius: 20px; padding: 1.8rem; margin-bottom: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.02); }
+        /* فرم‌ها و کارت‌ها */
+        .glass-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+        }
+
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
         .field { display: flex; flex-direction: column; gap: 0.4rem; }
-        .field label { font-size: 0.82rem; font-weight: 600; }
-        .field input, .field select { background: var(--gray-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem; outline: none; font-size: 0.9rem; }
+        .field label { font-size: 0.82rem; color: var(--dark-color); font-weight: 600; }
+        .field input, .field select {
+            background: var(--gray-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: var(--text-color);
+            outline: none;
+            font-size: 0.9rem;
+        }
         .field input:focus, .field select:focus { border-color: var(--accent-color); background: #fff; }
         .field.full { grid-column: 1 / -1; }
+
         .form-actions { display: flex; gap: 0.8rem; margin-top: 1.5rem; }
         .btn-save { background: var(--dark-color); color: #fff; padding: 0.75rem 2rem; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; }
-        .btn-cancel { background: transparent; padding: 0.75rem 1.5rem; border-radius: 10px; border: 1px solid var(--border-color); cursor: pointer; }
+        .btn-cancel { background: transparent; color: var(--text-light); padding: 0.75rem 1.5rem; border-radius: 10px; border: 1px solid var(--border-color); cursor: pointer; }
 
-        /* Tables & Details */
+        /* جداول */
         .table-wrapper { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; text-align: right; font-size: 0.9rem; }
         th { color: var(--text-light); padding: 1rem; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.85rem; }
-        td { padding: 1.1rem 1rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
+        td { padding: 1.1rem 1rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; color: var(--text-color); }
         tr:hover td { background: var(--gray-bg); }
-        
-        .thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); }
-        
-        /* Badges */
+
+        .thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border-color); background: #fff; }
         .badge { display: inline-block; padding: 0.3rem 0.7rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-        .badge-pending { background: #fff3e0; color: var(--warning); }
-        .badge-completed { background: #e8f5e9; color: var(--success); }
-        .badge-cancelled { background: #ffebee; color: var(--danger); }
-        .badge-failed { background: #fce4ec; color: #c2185b; }
-        
-        .order-details-box { font-size: 0.85rem; color: var(--text-light); line-height: 1.8; margin-top: 0.5rem; background: var(--gray-bg); padding: 0.8rem; border-radius: 8px; border: 1px dashed var(--border-color); }
-        .order-details-box strong { color: var(--dark-color); }
+        .badge-special { background: #fff3e0; color: #f57c00; }
+        .badge-normal { background: var(--gray-bg); color: var(--text-light); }
+        .badge-status { background: #e8f5e9; color: var(--success); }
 
-        .action-btns { display: flex; gap: 0.5rem; flex-wrap: wrap;}
-        .icon-btn { padding: 0.4rem 0.8rem; border-radius: 8px; border: 1px solid var(--border-color); background: #fff; font-size: 0.8rem; cursor: pointer; transition: 0.2s; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;}
-        .icon-btn.reply { color: var(--accent-color); border-color: var(--accent-color); }
-        .icon-btn.reply:hover { background: var(--accent-color); color: #fff; }
-
-        /* Status Select */
-        .status-select { padding: 0.4rem 0.6rem; border-radius: 8px; border: 1px solid var(--border-color); font-family: inherit; font-size: 0.8rem; font-weight: 600; outline: none; cursor: pointer; background: #fff; color: var(--dark-color); }
-        .status-select:focus { border-color: var(--accent-color); }
+        .action-btns { display: flex; gap: 0.5rem; }
+        .icon-btn {
+            width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border-color);
+            background: #fff; color: var(--text-color);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s;
+        }
+        .icon-btn.del { color: var(--danger); }
+        .icon-btn.del:hover { background: #fff0f0; border-color: var(--danger); }
     </style>
 </head>
 <body>
@@ -85,8 +190,13 @@
     <div id="login-wrapper">
         <div class="login-card">
             <h2>مدیریت Mobile Iran</h2>
+            <p>جهت دسترسی به داشبورد رمز عبور را وارد کنید</p>
+
             <form onsubmit="handleLogin(event)">
-                <div class="input-box"><input type="password" id="passInput" placeholder="رمز عبور ادمین (@mobileIRAN)" required><i class="fa-solid fa-lock"></i></div>
+                <div class="input-box">
+                    <input type="password" id="passInput" placeholder="رمز عبور ادمین" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
                 <button type="submit" class="btn-glow">ورود به پنل</button>
             </form>
         </div>
@@ -96,78 +206,142 @@
     <div id="dashboard-wrapper">
         <aside class="sidebar">
             <div>
-                <div class="brand"><h3>Mobile Iran</h3></div>
+                <div class="brand">
+                    <div class="brand-text">
+                        <h3>Mobile Iran</h3>
+                    </div>
+                </div>
+
                 <ul class="menu-list">
-                    <li class="menu-item active" onclick="switchPanel('products', event)"><i class="fa-solid fa-box"></i> محصولات</li>
-                    <li class="menu-item" onclick="switchPanel('orders', event)"><i class="fa-solid fa-bag-shopping"></i> سفارشات</li>
-                    <li class="menu-item" onclick="switchPanel('reviews', event)"><i class="fa-solid fa-comments"></i> نظرات</li>
-                    <li class="menu-item" onclick="switchPanel('users', event)"><i class="fa-solid fa-users"></i> کاربران</li>
+                    <li class="menu-item active" onclick="switchPanel('products', event)">
+                        <i class="fa-solid fa-box"></i> محصولات
+                    </li>
+                    <li class="menu-item" onclick="switchPanel('orders', event)">
+                        <i class="fa-solid fa-bag-shopping"></i> سفارشات
+                    </li>
+                    <li class="menu-item" onclick="switchPanel('users', event)">
+                        <i class="fa-solid fa-users"></i> کاربران
+                    </li>
                 </ul>
             </div>
-            <button class="btn-logout" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> خروج</button>
+
+            <button class="btn-logout" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i> خروج
+            </button>
         </aside>
 
         <main class="content-area">
 
             <!-- تب محصولات -->
             <div id="panel-products" class="tab-panel active">
-                <div class="section-header">مدیریت محصولات</div>
+                <div class="section-header"><h2>مدیریت محصولات</h2></div>
+
                 <div class="glass-card">
                     <h3 id="formTitle" style="font-size: 1rem; margin-bottom: 1.2rem; font-weight: 700;">افزودن محصول جدید</h3>
                     <form id="productForm" onsubmit="saveProduct(event)">
                         <input type="hidden" id="p_id">
                         <div class="form-grid">
-                            <div class="field"><label>نام محصول</label><input type="text" id="p_name" required></div>
-                            <div class="field"><label>دسته‌بندی</label><input type="text" id="p_category" placeholder="مثال: قاب‌ها (Cases)" required></div>
-                            <div class="field"><label>قیمت اصلی</label><input type="text" id="p_price" required></div>
-                            <div class="field"><label>قیمت با تخفیف</label><input type="text" id="p_discount"></div>
-                            <div class="field"><label>بخش نمایش</label><select id="p_section"><option value="normal">عادی</option><option value="special">پیشنهاد ویژه</option></select></div>
-                            <div class="field"><label>لینک تصویر</label><input type="text" id="p_image" required></div>
-                            <div class="field full"><label>توضیحات کوتاه</label><input type="text" id="p_desc"></div>
+                            <div class="field">
+                                <label>نام محصول</label>
+                                <input type="text" id="p_name" placeholder="مثلا آیفون ۱۵ پرومکس" required>
+                            </div>
+                            <div class="field">
+                                <label>دسته‌بندی</label>
+                                <select id="p_category" required>
+                                    <option value="قاب‌ها (Cases)">قاب‌ها (Cases)</option>
+                                    <option value="مگ‌سیف (MagSafe)">مگ‌سیف (MagSafe)</option>
+                                    <option value="کابل و مبدل (Cables)">کابل و مبدل (Cables)</option>
+                                    <option value="شارژر وایرلس (Charger)">شارژر وایرلس (Charger)</option>
+                                    <option value="پاوربانک (Power Banks)">پاوربانک (Power Banks)</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>قیمت اصلی (تومان)</label>
+                                <input type="text" id="p_price" placeholder="مثال: ۳۵۰,۰۰۰" required>
+                            </div>
+                            <div class="field">
+                                <label>قیمت با تخفیف (اختیاری)</label>
+                                <input type="text" id="p_discount" placeholder="در صورت نیاز">
+                            </div>
+                            <div class="field">
+                                <label>بخش نمایش</label>
+                                <select id="p_section">
+                                    <option value="normal">عادی</option>
+                                    <option value="special">پیشنهاد ویژه</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label>لینک تصویر</label>
+                                <input type="text" id="p_image" placeholder="https://..." required>
+                            </div>
+                            <div class="field full">
+                                <label>توضیحات کوتاه</label>
+                                <input type="text" id="p_desc" placeholder="توضیحات مختصر...">
+                            </div>
                         </div>
+
                         <div class="form-actions">
                             <button type="submit" class="btn-save">ذخیره محصول</button>
                             <button type="button" class="btn-cancel" onclick="resetForm()">انصراف</button>
                         </div>
                     </form>
                 </div>
+
                 <div class="glass-card table-wrapper">
                     <table>
-                        <thead><tr><th>تصویر</th><th>نام</th><th>دسته‌بندی</th><th>قیمت</th><th>عملیات</th></tr></thead>
-                        <tbody id="productsTable"></tbody>
+                        <thead>
+                            <tr>
+                                <th>تصویر</th>
+                                <th>نام محصول</th>
+                                <th>دسته‌بندی</th>
+                                <th>قیمت</th>
+                                <th>بخش</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable">
+                            <!-- لود محصولات -->
+                        </tbody>
                     </table>
                 </div>
             </div>
 
             <!-- تب سفارشات -->
             <div id="panel-orders" class="tab-panel">
-                <div class="section-header">بررسی سفارشات</div>
+                <div class="section-header"><h2>سفارشات</h2></div>
                 <div class="glass-card table-wrapper">
                     <table>
-                        <thead><tr><th>اطلاعات مشتری</th><th>جزئیات سفارش و ارسال</th><th>مبلغ کل</th><th>وضعیت فعلی</th><th>تغییر وضعیت</th></tr></thead>
-                        <tbody id="ordersTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- تب نظرات -->
-            <div id="panel-reviews" class="tab-panel">
-                <div class="section-header">مدیریت نظرات کاربران</div>
-                <div class="glass-card table-wrapper">
-                    <table>
-                        <thead><tr><th>کاربر</th><th>متن نظر</th><th>پاسخ شما</th><th>وضعیت</th><th>عملیات</th></tr></thead>
-                        <tbody id="reviewsTable"></tbody>
+                        <thead>
+                            <tr>
+                                <th>نام مشتری</th>
+                                <th>شماره تماس</th>
+                                <th>مبلغ کل</th>
+                                <th>تاریخ</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTable">
+                            <!-- لود سفارشات -->
+                        </tbody>
                     </table>
                 </div>
             </div>
 
             <!-- تب کاربران -->
             <div id="panel-users" class="tab-panel">
-                <div class="section-header">لیست کاربران</div>
+                <div class="section-header"><h2>لیست کاربران</h2></div>
                 <div class="glass-card table-wrapper">
                     <table>
-                        <thead><tr><th>نام</th><th>شماره / ایمیل</th><th>تاریخ عضویت</th></tr></thead>
-                        <tbody id="usersTable"></tbody>
+                        <thead>
+                            <tr>
+                                <th>نام کاربر</th>
+                                <th>شماره / ایمیل</th>
+                                <th>تاریخ عضویت</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTable">
+                            <!-- لود داینامیک کاربران -->
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -177,19 +351,31 @@
 
     <script>
         const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
+        
+        // متغیر سراسری برای نگهداری لیست محصولات جهت استفاده در تابع ویرایش
         let allAdminProducts = [];
 
+        // ورود به پنل
         function handleLogin(e) {
             e.preventDefault();
-            if (document.getElementById('passInput').value === '@mobileIRAN') { 
+            const pass = document.getElementById('passInput').value;
+            if (pass === '@mobileIRAN') { 
                 document.getElementById('login-wrapper').style.display = 'none';
                 document.getElementById('dashboard-wrapper').style.display = 'flex';
-                fetchData();
-            } else { alert('رمز عبور نادرست است!'); }
+                fetchUsers();
+                fetchProductsAdmin();
+                fetchOrders();
+            } else {
+                alert('رمز عبور نادرست است!');
+            }
         }
 
-        function logout() { location.reload(); }
-        
+        function logout() {
+            document.getElementById('login-wrapper').style.display = 'flex';
+            document.getElementById('dashboard-wrapper').style.display = 'none';
+            document.getElementById('passInput').value = '';
+        }
+
         function switchPanel(name, event) {
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-panel').forEach(el => el.classList.remove('active'));
@@ -197,164 +383,182 @@
             document.getElementById('panel-' + name).classList.add('active');
         }
 
-        function fetchData() {
-            fetchProductsAdmin();
-            fetchOrders();
-            fetchUsers();
-            fetchReviews();
+        // --- بخش کاربران ---
+        async function fetchUsers() {
+            try {
+                const res = await fetch(`${API_BASE}/api/users`);
+                const users = await res.json();
+                const tbody = document.getElementById('usersTable');
+                tbody.innerHTML = '';
+                
+                if (users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">کاربری یافت نشد</td></tr>';
+                    return;
+                }
+
+                users.forEach(user => {
+                    const date = new Date(user.created_at).toLocaleDateString('fa-IR');
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${user.name}</td>
+                            <td>${user.phone_or_email}</td>
+                            <td>${date}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Error fetching users", err);
+            }
         }
 
-        // --- محصولات ---
+        // --- بخش محصولات ---
         async function fetchProductsAdmin() {
-            const res = await fetch(`${API_BASE}/api/products`);
-            allAdminProducts = await res.json();
-            const tbody = document.getElementById('productsTable');
-            tbody.innerHTML = allAdminProducts.length ? '' : '<tr><td colspan="5" style="text-align:center;">خالی</td></tr>';
-            allAdminProducts.forEach(p => {
-                tbody.innerHTML += `<tr>
-                    <td><img src="${p.image}" class="thumb"></td>
-                    <td>${p.name}</td><td>${p.category}</td><td>${p.price}</td>
-                    <td><div class="action-btns">
-                        <button class="icon-btn reply" onclick="editProduct(${p.id})"><i class="fa-solid fa-pen"></i> ویرایش</button>
-                        <button class="icon-btn" style="color:var(--danger);border-color:var(--danger);" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash"></i></button>
-                    </div></td>
-                </tr>`;
-            });
+            try {
+                const res = await fetch(`${API_BASE}/api/products`);
+                allAdminProducts = await res.json(); // ذخیره در متغیر سراسری
+                const tbody = document.getElementById('productsTable');
+                tbody.innerHTML = '';
+
+                if (allAdminProducts.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">محصولی یافت نشد</td></tr>';
+                    return;
+                }
+
+                allAdminProducts.forEach(p => {
+                    const badgeClass = p.section === 'special' ? 'badge-special' : 'badge-normal';
+                    const sectionName = p.section === 'special' ? 'پیشنهاد ویژه' : 'عادی';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${p.image}" class="thumb"></td>
+                            <td>${p.name}</td>
+                            <td>${p.category}</td>
+                            <td>${p.price}</td>
+                            <td><span class="badge ${badgeClass}">${sectionName}</span></td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="icon-btn edit" onclick="editProduct(${p.id})" style="color: var(--accent-color); border-color: var(--accent-color);"><i class="fa-solid fa-pen"></i></button>
+                                    <button class="icon-btn del" onclick="deleteProduct(${p.id})"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Error fetching products", err);
+            }
         }
 
         async function saveProduct(e) {
             e.preventDefault();
-            const id = document.getElementById('p_id').value;
-            const data = {
-                name: document.getElementById('p_name').value, category: document.getElementById('p_category').value,
-                price: document.getElementById('p_price').value, discount_price: document.getElementById('p_discount').value,
-                section: document.getElementById('p_section').value, image: document.getElementById('p_image').value,
+            
+            const productId = document.getElementById('p_id').value; // چک میکنیم ایدی داریم یا نه
+            const method = productId ? 'PUT' : 'POST'; // اگر آیدی بود آپدیت میکنیم، اگر نبود میسازیم
+            const url = productId ? `${API_BASE}/api/products/${productId}` : `${API_BASE}/api/products`;
+
+            const productData = {
+                name: document.getElementById('p_name').value,
+                category: document.getElementById('p_category').value,
+                price: document.getElementById('p_price').value,
+                discount_price: document.getElementById('p_discount').value,
+                section: document.getElementById('p_section').value,
+                image: document.getElementById('p_image').value,
                 description: document.getElementById('p_desc').value
             };
-            await fetch(id ? `${API_BASE}/api/products/${id}` : `${API_BASE}/api/products`, {
-                method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
-            });
-            alert('انجام شد'); resetForm(); fetchProductsAdmin();
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+                const result = await res.json();
+                
+                if(result.success) {
+                    alert(productId ? 'محصول با موفقیت ویرایش شد!' : 'محصول با موفقیت ذخیره شد!');
+                    resetForm();
+                    fetchProductsAdmin(); // آپدیت جدول
+                } else {
+                    alert('خطا در ذخیره محصول.');
+                }
+            } catch (error) {
+                alert('خطا در ارتباط با سرور.');
+            }
         }
 
+        // تابع جدید برای قرار دادن اطلاعات محصول در فرم جهت ویرایش
         function editProduct(id) {
-            const p = allAdminProducts.find(x => x.id === id);
-            if (!p) return;
+            const product = allAdminProducts.find(p => p.id === id);
+            if (!product) return;
+
+            // اسکرول نرم به سمت فرم
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.getElementById('p_id').value = p.id;
-            ['name','category','price','discount_price','section','image','description'].forEach(k => {
-                document.getElementById(`p_${k.replace('discount_price','discount').replace('description','desc')}`).value = p[k] || '';
-            });
-            document.getElementById('formTitle').innerText = 'ویرایش: ' + p.name;
+
+            document.getElementById('formTitle').innerText = 'ویرایش محصول: ' + product.name;
+            document.getElementById('formTitle').style.color = 'var(--accent-color)';
+            
+            document.getElementById('p_id').value = product.id;
+            document.getElementById('p_name').value = product.name;
+            document.getElementById('p_category').value = product.category;
+            document.getElementById('p_price').value = product.price;
+            document.getElementById('p_discount').value = product.discount_price || '';
+            document.getElementById('p_section').value = product.section;
+            document.getElementById('p_image').value = product.image;
+            document.getElementById('p_desc').value = product.description || '';
+            
+            document.querySelector('.btn-save').innerText = 'ثبت تغییرات';
         }
 
         async function deleteProduct(id) {
-            if(confirm("حذف شود؟")) { await fetch(`${API_BASE}/api/products/${id}`, { method: 'DELETE' }); fetchProductsAdmin(); }
-        }
-        function resetForm() { document.getElementById('productForm').reset(); document.getElementById('p_id').value = ''; document.getElementById('formTitle').innerText = 'افزودن محصول جدید'; }
-
-        // --- سفارشات با منوی کشویی ---
-        async function fetchOrders() {
-            const res = await fetch(`${API_BASE}/api/orders`);
-            const orders = await res.json();
-            const tbody = document.getElementById('ordersTable');
-            tbody.innerHTML = orders.length ? '' : '<tr><td colspan="5" style="text-align:center;">سفارشی نیست</td></tr>';
-            
-            orders.forEach(order => {
-                const date = new Date(order.created_at).toLocaleDateString('fa-IR');
-                let detailsHTML = 'بدون جزئیات';
+            if(confirm("آیا از حذف این محصول اطمینان دارید؟")) {
                 try {
-                    const parsed = JSON.parse(order.items);
-                    let itemsStr = parsed.cartItems.map(i => `- ${i.name} <b>(${i.qty} عدد)</b>`).join('<br>');
-                    detailsHTML = `
-                        <div class="order-details-box">
-                            <strong>اقلام:</strong><br>${itemsStr}<br>
-                            <hr style="margin:5px 0; border:0; border-top:1px dashed #d2d2d7;">
-                            <strong>آدرس:</strong> ${parsed.address} - کد پستی: ${parsed.postalCode}<br>
-                            <strong>ارسال:</strong> ${parsed.shippingMethod}<br>
-                            <strong style="color:var(--danger);">شماره پیگیری فیش:</strong> ${parsed.trackingCode}
-                        </div>`;
-                } catch(e) {}
+                    const res = await fetch(`${API_BASE}/api/products/${id}`, { method: 'DELETE' });
+                    const result = await res.json();
+                    if(result.success) {
+                        alert('محصول حذف شد.');
+                        fetchProductsAdmin(); // آپدیت جدول
+                    }
+                } catch (error) {
+                    alert('خطا در حذف محصول.');
+                }
+            }
+        }
 
-                let badgeHTML = '';
-                switch (order.status) {
-                    case 'completed': badgeHTML = '<span class="badge badge-completed">تکمیل و ارسال شده</span>'; break;
-                    case 'cancelled': badgeHTML = '<span class="badge badge-cancelled">لغو شده</span>'; break;
-                    case 'failed': badgeHTML = '<span class="badge badge-failed">واریزی ناموفق</span>'; break;
-                    default: badgeHTML = '<span class="badge badge-pending">در حال بررسی</span>';
+        function resetForm() {
+            document.getElementById('productForm').reset();
+            document.getElementById('p_id').value = '';
+            document.getElementById('formTitle').innerText = 'افزودن محصول جدید';
+            document.getElementById('formTitle').style.color = 'var(--dark-color)';
+            document.querySelector('.btn-save').innerText = 'ذخیره محصول';
+        }
+
+        // --- بخش سفارشات ---
+        async function fetchOrders() {
+            try {
+                const res = await fetch(`${API_BASE}/api/orders`);
+                const orders = await res.json();
+                const tbody = document.getElementById('ordersTable');
+                tbody.innerHTML = '';
+                
+                if (orders.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">سفارشی ثبت نشده است</td></tr>';
+                    return;
                 }
 
-                // منوی کشویی وضعیت‌ها
-                const selectMenu = `
-                    <select class="status-select" onchange="changeOrderStatus(${order.id}, this.value)">
-                        <option value="pending" ${order.status === 'pending' || !order.status ? 'selected' : ''}>در حال بررسی</option>
-                        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>تکمیل سفارش</option>
-                        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>لغو سفارش</option>
-                        <option value="failed" ${order.status === 'failed' ? 'selected' : ''}>واریزی ناموفق</option>
-                    </select>
-                `;
-
-                tbody.innerHTML += `<tr>
-                    <td><b>${order.user_name}</b><br><span style="font-size:0.8rem; color:var(--text-light);">${order.phone}</span><br><span style="font-size:0.75rem;">${date}</span></td>
-                    <td style="min-width: 280px;">${detailsHTML}</td>
-                    <td><b>${order.total_amount.toLocaleString()} تومان</b></td>
-                    <td>${badgeHTML}</td>
-                    <td>${selectMenu}</td>
-                </tr>`;
-            });
-        }
-
-        async function changeOrderStatus(id, newStatus) {
-            if(confirm('آیا از تغییر وضعیت این سفارش مطمئن هستید؟')) {
-                await fetch(`${API_BASE}/api/orders/${id}`, { 
-                    method: 'PUT', 
-                    headers: {'Content-Type':'application/json'}, 
-                    body: JSON.stringify({status: newStatus}) 
+                orders.forEach(order => {
+                    const date = new Date(order.created_at).toLocaleDateString('fa-IR');
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${order.user_name}</td>
+                            <td>${order.phone}</td>
+                            <td>${order.total_amount.toLocaleString()} تومان</td>
+                            <td>${date}</td>
+                            <td><span class="badge badge-normal">در حال بررسی</span></td>
+                        </tr>
+                    `;
                 });
-                fetchOrders(); // بروزرسانی جدول و برچسب رنگی
-            } else {
-                fetchOrders(); // اگر ادمین لغو کرد، منوی کشویی به حالت قبلی برگردد
+            } catch (err) {
+                console.error("Error fetching orders", err);
             }
-        }
-
-        // --- نظرات ---
-        async function fetchReviews() {
-            const res = await fetch(`${API_BASE}/api/reviews`);
-            const reviews = await res.json();
-            const tbody = document.getElementById('reviewsTable');
-            tbody.innerHTML = reviews.length ? '' : '<tr><td colspan="5" style="text-align:center;">نظری ثبت نشده</td></tr>';
-            
-            reviews.forEach(r => {
-                const isReplied = !!r.reply;
-                const badge = isReplied ? '<span class="badge badge-completed">پاسخ داده شده</span>' : '<span class="badge badge-pending">در انتظار پاسخ</span>';
-                const replyText = r.reply ? r.reply : '-';
-                tbody.innerHTML += `<tr>
-                    <td>${r.user_name}</td>
-                    <td>${r.comment}</td>
-                    <td style="color:var(--accent-color); font-size:0.85rem;">${replyText}</td>
-                    <td>${badge}</td>
-                    <td><button class="icon-btn reply" onclick="replyToReview(${r.id})"><i class="fa-solid fa-reply"></i> ${isReplied ? 'ویرایش پاسخ' : 'ثبت پاسخ'}</button></td>
-                </tr>`;
-            });
-        }
-
-        async function replyToReview(id) {
-            const text = prompt("متن پاسخ خود را برای این کاربر بنویسید:");
-            if(text !== null && text.trim() !== "") {
-                await fetch(`${API_BASE}/api/reviews/${id}`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify({reply: text}) });
-                fetchReviews();
-            }
-        }
-
-        // --- کاربران ---
-        async function fetchUsers() {
-            const res = await fetch(`${API_BASE}/api/users`);
-            const users = await res.json();
-            const tbody = document.getElementById('usersTable');
-            tbody.innerHTML = users.length ? '' : '<tr><td colspan="3" style="text-align:center;">کاربری نیست</td></tr>';
-            users.forEach(u => {
-                tbody.innerHTML += `<tr><td>${u.name}</td><td>${u.phone_or_email}</td><td>${new Date(u.created_at).toLocaleDateString('fa-IR')}</td></tr>`;
-            });
         }
     </script>
 </body>
