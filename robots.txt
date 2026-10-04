@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://[دامنه-شما.ir]/sitemap.xml
