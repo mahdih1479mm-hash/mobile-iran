@@ -141,7 +141,12 @@
                             <div class="field"><label>قیمت اصلی (تومان)</label><input type="text" id="p_price" required></div>
                             <div class="field"><label>قیمت با تخفیف</label><input type="text" id="p_discount"></div>
                             <div class="field"><label>بخش نمایش</label><select id="p_section"><option value="normal">عادی</option><option value="special">پیشنهاد ویژه</option></select></div>
-                            <div class="field full"><label>لینک تصویر</label><input type="text" id="p_image" required></div>
+
+                            <div class="field full">
+    <label>لینک تصاویر (با خط جدید Enter یا کاما جدا کنید)</label>
+    <textarea id="p_image" rows="3" placeholder="لینک عکس اول&#10;لینک عکس دوم&#10;..." required style="resize: vertical;"></textarea>
+</div>
+                            
                             <div class="field full"><label>توضیحات کوتاه</label><input type="text" id="p_desc"></div>
                         </div>
                         <div class="form-actions" style="margin-top:1rem;">
@@ -246,8 +251,10 @@
             const tbody = document.getElementById('productsTable');
             tbody.innerHTML = items.length ? '' : '<tr><td colspan="4" style="text-align:center;">خالی</td></tr>';
             items.forEach(p => {
+                // فقط عکس اول را در جدول ادمین نشان می‌دهیم
+                const firstImg = p.image.split(/,|\n/)[0].trim();
                 tbody.innerHTML += `<tr>
-                    <td><div style="display:flex; align-items:center; gap:10px;"><img src="${p.image}" class="thumb"> <span>${p.name}</span></div></td>
+                    <td><div style="display:flex; align-items:center; gap:10px;"><img src="${firstImg}" class="thumb"> <span>${p.name}</span></div></td>
                     <td>${p.category}</td><td>${p.price}</td>
                     <td><div class="action-btns">
                         <button class="icon-btn" style="color:var(--accent-color); border-color:var(--accent-color);" onclick="editProduct(${p.id})"><i class="fa-solid fa-pen"></i></button>
@@ -264,13 +271,18 @@
             else renderAdminProducts(allAdminProducts.filter(p => p.category === cat));
         }
 
-        async function saveProduct(e) {
+async function saveProduct(e) {
             e.preventDefault();
             const id = document.getElementById('p_id').value;
+            
+            // تبدیل خطوط جدید (Enter) به کاما برای ذخیره در دیتابیس
+            let formattedImages = document.getElementById('p_image').value.replace(/\n/g, ',').replace(/,,+/g, ',').trim();
+            if(formattedImages.endsWith(',')) formattedImages = formattedImages.slice(0, -1);
+
             const data = {
                 name: document.getElementById('p_name').value, category: document.getElementById('p_category').value,
                 price: document.getElementById('p_price').value, discount_price: document.getElementById('p_discount').value,
-                section: document.getElementById('p_section').value, image: document.getElementById('p_image').value,
+                section: document.getElementById('p_section').value, image: formattedImages,
                 description: document.getElementById('p_desc').value
             };
             await fetch(id ? `${API_BASE}/api/products/${id}` : `${API_BASE}/api/products`, {
@@ -284,9 +296,12 @@
             if (!p) return;
             window.scrollTo({ top: 0, behavior: 'smooth' });
             document.getElementById('p_id').value = p.id;
-            ['name','category','price','discount_price','section','image','description'].forEach(k => {
+            
+            ['name','category','price','discount_price','section','description'].forEach(k => {
                 document.getElementById(`p_${k.replace('discount_price','discount').replace('description','desc')}`).value = p[k] || '';
             });
+            // نمایش لینک‌ها به صورت خط به خط در فرم ویرایش
+            document.getElementById('p_image').value = (p.image || '').replace(/,/g, '\n');
             document.getElementById('formTitle').innerText = 'ویرایش: ' + p.name;
         }
 
