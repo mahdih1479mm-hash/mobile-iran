@@ -1,103 +1,60 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta name="description" content="فروشگاه موبایل ایران - عرضه کننده تخصصی لوازم جانبی موبایل، قاب، کابل، شارژر، ایرپاد و لوازم صوتی با تضمین اصالت کالا و گارانتی معتبر.">
-    <meta property="og:title" content="موبایل ایران | تخصصی‌ترین فروشگاه لوازم جانبی">
-    <meta property="og:site_name" content="Mobile Iran">
-    <meta property="og:locale" content="fa_IR">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#1d1d1f">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>جزئیات محصول | Mobile Iran</title>
+    <title>جزئیات محصول | موبایل ایران</title>
+    <!-- سئو داینامیک توسط جاوااسکریپت پر می‌شود -->
+    <meta name="description" content="خرید لوازم جانبی موبایل از فروشگاه موبایل ایران">
+    
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root { 
-            --dark-color: #1d1d1f; 
-            --gray-bg: #f5f5f7; 
-            --border-color: #e5e5ea; 
-            --text-color: #1d1d1f; 
-            --text-light: #86868b; 
-            --accent-color: #007aff;
-            --success: #34c759;
-            --star-color: #ff9500;
-        }
+        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #e5e5ea; --text-color: #1d1d1f; --text-light: #86868b; --accent-color: #007aff; --danger: #ff3b30; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--gray-bg); color: var(--text-color); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* هدر */
-        header { background-color: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        /* Header (Same as index) */
+        header { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
         .header-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; }
         .logo { font-size: 1.2rem; font-weight: 800; color: var(--dark-color); }
-        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
-        .nav-links a { font-size: 0.9rem; color: var(--text-light); transition: 0.2s; }
-        .nav-links a:hover, .nav-links a.active { color: var(--dark-color); font-weight: 600; }
+        .nav-links { display: none; }
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #fff; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 1; border-radius: 12px; overflow: hidden; top: 100%; right: 0; border: 1px solid var(--border-color); }
+        .dropdown-content a { color: var(--text-color); padding: 12px 16px; display: block; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); }
+        .dropdown-content a:hover { background-color: var(--gray-bg); color: var(--accent-color); }
+        .dropdown:hover .dropdown-content { display: block; }
+        .support-link { color: #34c759 !important; font-weight: 700 !important; direction: ltr; display: inline-block; }
         .header-actions { display: flex; align-items: center; gap: 0.6rem; }
         .btn-action { background: var(--gray-bg); border: 1px solid var(--border-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--dark-color); }
 
-        /* بخش اصلی محصول */
         main { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; width: 100%; flex: 1; }
-        
-        .product-detail-card { background: #fff; border-radius: 20px; border: 1px solid var(--border-color); padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
-        
-        .product-gallery { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+        .product-detail-card { background: #fff; border-radius: 20px; border: 1px solid var(--border-color); padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem; }
         .main-image-box { width: 100%; height: 350px; background: var(--gray-bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border-color); }
         .main-image-box img { max-width: 80%; max-height: 80%; object-fit: contain; }
-
         .product-info-side { display: flex; flex-direction: column; gap: 1rem; }
         .product-category-tag { font-size: 0.8rem; font-weight: 600; color: var(--accent-color); background: #e3f2fd; padding: 0.2rem 0.6rem; border-radius: 6px; width: fit-content; }
         .product-title { font-size: 1.6rem; font-weight: 800; color: var(--dark-color); }
-        .product-rating { display: flex; align-items: center; gap: 0.4rem; color: var(--star-color); font-size: 0.9rem; }
-        .product-rating span { color: var(--text-light); font-size: 0.85rem; margin-right: 0.3rem; }
-        
         .product-price-box { display: flex; align-items: center; gap: 1rem; margin: 0.5rem 0; }
         .current-price { font-size: 1.4rem; font-weight: 800; color: var(--dark-color); }
         .old-price { font-size: 1rem; color: var(--text-light); text-decoration: line-through; }
+        .product-description { font-size: 0.95rem; color: var(--text-light); line-height: 1.8; border-top: 1px solid var(--border-color); padding: 1rem 0; }
+        .btn-add-to-cart { background: var(--accent-color); color: #fff; border: none; width: 100%; padding: 1rem; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; gap: 0.5rem; margin-top: auto; }
         
-        .product-description { font-size: 0.95rem; color: var(--text-light); line-height: 1.8; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 1rem 0; }
-        
-        .btn-add-to-cart { background: var(--accent-color); color: #fff; border: none; width: 100%; padding: 1rem; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto; }
-        .btn-add-to-cart:hover { background: #005bb5; }
+        /* Footer */
+        .site-footer { background-color: var(--dark-color); color: #fff; padding: 3rem 1rem 1rem; margin-top: auto; }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .footer-col h4 { font-size: 1.1rem; margin-bottom: 1rem; color: #fff; }
+        .footer-col p { font-size: 0.85rem; color: #a1a1a6; line-height: 1.8; margin-bottom: 0.8rem; }
+        .footer-col a { display: block; color: #a1a1a6; font-size: 0.85rem; margin-bottom: 0.6rem; transition: 0.2s; }
+        .footer-col a:hover { color: #fff; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center; font-size: 0.8rem; color: #a1a1a6; }
 
-        /* بخش نظرات کاربران */
-        .section-title { font-size: 1.3rem; font-weight: 800; color: var(--dark-color); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
-        .reviews-container { background: #fff; border-radius: 20px; border: 1px solid var(--border-color); padding: 2rem; margin-bottom: 3rem; }
-        
-        .review-item { padding: 1rem 0; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 0.4rem; }
-        .review-item:last-child { border-bottom: none; }
-        .review-header { display: flex; justify-content: space-between; align-items: center; }
-        .reviewer-name { font-weight: 700; font-size: 0.95rem; }
-        .review-date { font-size: 0.75rem; color: var(--text-light); }
-        .review-text { font-size: 0.9rem; color: var(--text-color); }
-
-        .add-review-form { margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .form-control { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--border-color); border-radius: 10px; font-family: inherit; font-size: 0.9rem; outline: none; background: var(--gray-bg); }
-        .form-control:focus { border-color: var(--accent-color); background: #fff; }
-        textarea.form-control { resize: vertical; min-height: 100px; }
-        .btn-submit-review { background: var(--dark-color); color: #fff; border: none; padding: 0.8rem 1.5rem; border-radius: 10px; font-weight: 700; cursor: pointer; width: fit-content; }
-
-        /* محصولات مشابه */
-        .similar-products-section { margin-bottom: 3rem; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
-        .product-card { background: #fff; border-radius: 16px; border: 1px solid var(--border-color); padding: 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; transition: 0.2s; }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-        .card-img { width: 100%; height: 160px; background: var(--gray-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .card-img img { max-width: 80%; max-height: 80%; object-fit: contain; }
-        .card-title { font-size: 0.95rem; font-weight: 700; color: var(--dark-color); }
-        .card-price { font-size: 0.9rem; font-weight: 800; color: var(--accent-color); }
-
-        footer { background-color: var(--gray-bg); border-top: 1px solid var(--border-color); padding: 2rem 1rem; text-align: center; color: var(--text-light); font-size: 0.8rem; }
-
-        @media (max-width: 768px) {
-            .product-detail-card { grid-template-columns: 1fr; padding: 1.2rem; }
-            .form-row { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-        }
+        @media (min-width: 768px) { .nav-links { display: flex; gap: 1.5rem; align-items: center; font-size: 0.9rem;} }
+        @media (max-width: 768px) { .product-detail-card { grid-template-columns: 1fr; padding: 1.2rem; } }
     </style>
 </head>
 <body>
@@ -107,92 +64,99 @@
             <div class="logo">Mobile Iran</div>
             <ul class="nav-links">
                 <li><a href="index.html">خانه</a></li>
-                <li><a href="products.html" class="active">محصولات</a></li>
+                <li class="dropdown">
+                    <a href="products.html">دسته‌بندی‌ها <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="products.html?cat=موبایل و قاب">موبایل و قاب</a>
+                        <a href="products.html?cat=کابل و شارژر">کابل و شارژر</a>
+                        <a href="products.html?cat=ایرپاد و هندزفری">ایرپاد و هندزفری</a>
+                        <a href="products.html?cat=هدفون و دورگردنی">هدفون و دورگردنی</a>
+                        <a href="products.html?cat=اسپیکر و لوازم صوتی">اسپیکر و لوازم صوتی</a>
+                        <a href="products.html?cat=مبدل و ذخیره‌سازی">مبدل و ذخیره‌سازی</a>
+                        <a href="products.html?cat=لوازم جانبی خودرو">لوازم جانبی خودرو</a>
+                    </div>
+                </li>
+                <li><a href="products.html">همه محصولات</a></li>
                 <li><a href="about.html">درباره ما</a></li>
+                <li><a href="tel:09198980076" class="support-link"><i class="fa-solid fa-headset"></i> 09198980076</a></li>
             </ul>
             <div class="header-actions">
                 <a href="cart.html" class="btn-action"><i class="fa-solid fa-bag-shopping"></i></a>
-                <a href="auth.html" class="btn-action"><i class="fa-solid fa-user"></i></a>
+                <a href="auth.html" class="btn-action"><i class="fa-regular fa-user"></i></a>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- اطلاعات اصلی محصول -->
         <div class="product-detail-card" id="product-detail-container">
-            <!-- محتوا توسط جاوااسکریپت لود می‌شود -->
-        </div>
-
-        <!-- نظرات کاربران -->
-        <div class="reviews-container">
-            <div class="section-title"><i class="fa-regular fa-comments"></i> نظرات کاربران</div>
-            
-            <div id="reviews-list">
-                <!-- لیست نظرات -->
-                <div class="review-item">
-                    <div class="review-header">
-                        <span class="reviewer-name">محمد رضایی</span>
-                        <span class="review-date">۱۴۰۲/۰۸/۱۵</span>
-                    </div>
-                    <div class="review-rating" style="font-size: 0.8rem;">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="review-text">محصول بسیار باکیفیتیه، دقیقاً همونی بود که توی سایت دیدم. ممنون از ارسال سریعتون.</p>
-                </div>
-            </div>
-
-            <!-- فرم ثبت نظر جدید -->
-            <form class="add-review-form" onsubmit="submitReview(event)">
-                <h4 style="font-size: 1rem; font-weight: 700;">شما هم درباره این محصول نظر بدهید</h4>
-                <div class="form-row">
-                    <input type="text" id="review-name" class="form-control" placeholder="نام شما" required>
-                    <select id="review-rating-select" class="form-control">
-                        <option value="5">⭐⭐⭐⭐⭐ (عالی)</option>
-                        <option value="4">⭐⭐⭐⭐ (خوب)</option>
-                        <option value="3">⭐⭐⭐ (متوسط)</option>
-                        <option value="2">⭐⭐ (ضعیف)</option>
-                        <option value="1">⭐ (خیلی بد)</option>
-                    </select>
-                </div>
-                <textarea id="review-text" class="form-control" placeholder="متن نظر شما..." required></textarea>
-                <button type="submit" class="btn-submit-review">ارسال نظر</button>
-            </form>
-        </div>
-
-        <!-- محصولات مشابه -->
-        <div class="similar-products-section">
-            <div class="section-title"><i class="fa-solid fa-layer-group"></i> محصولات مشابه</div>
-            <div class="products-grid" id="similar-products-grid">
-                <!-- محصولات مشابه با جاوااسکریپت لود می‌شوند -->
-            </div>
+            <p style="text-align:center; width:100%; grid-column:1/-1;">در حال بارگذاری...</p>
         </div>
     </main>
 
-    <footer><p>تمامی حقوق محفوظ است | <strong>Mobile Iran</strong></p></footer>
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>درباره موبایل ایران</h4>
+                <p>فروشگاه موبایل ایران با هدف ارائه تخصصی‌ترین لوازم جانبی اورجینال، تضمین پایین‌ترین قیمت و بالاترین کیفیت در خدمت شماست.</p>
+                <p><i class="fa-solid fa-location-dot"></i> <strong>آدرس:</strong> تهران، شهریار، خیابان مفتح، نبش مسجد قائم، فروشگاه موبایل ایران</p>
+                <p><i class="fa-solid fa-phone"></i> <strong>پشتیبانی:</strong> <a href="tel:09198980076" style="display:inline; direction:ltr;">0919 898 0076</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>لینک‌های مفید</h4>
+                <a href="about.html"><i class="fa-solid fa-angle-left"></i> چرا موبایل ایران؟</a>
+                <a href="#"><i class="fa-solid fa-angle-left"></i> سوالات متداول</a>
+                <a href="#"><i class="fa-solid fa-angle-left"></i> قوانین و شرایط گارانتی</a>
+            </div>
+            <div class="footer-col">
+                <h4>اعتماد شما، سرمایه ماست</h4>
+                <p>تمامی محصولات این فروشگاه دارای ضمانت سلامت فیزیکی و تاییدیه اورجینال بودن کالا می‌باشند. خرید امن و ارسال سریع به سراسر کشور.</p>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>تمامی حقوق این سایت متعلق به فروشگاه <strong>موبایل ایران</strong> می‌باشد. © 1403</p></div>
+    </footer>
 
-  <script>
+    <script>
         const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
         const urlParams = new URLSearchParams(window.location.search);
         const productId = parseInt(urlParams.get('id'));
-
         let currentProduct = null;
-        let allProducts = [];
 
         async function loadProductData() {
             try {
                 const res = await fetch(`${API_BASE}/api/products`);
-                allProducts = await res.json();
+                const allProducts = await res.json();
                 currentProduct = allProducts.find(p => p.id === productId);
                 
                 if (currentProduct) {
                     renderProductDetail();
-                    renderSimilarProducts();
+                    
+                    // --- تنظیم سئو و متا تگ‌های داینامیک برای موتورهای جستجو و ترب ---
+                    document.title = currentProduct.name + " | موبایل ایران";
+                    document.querySelector('meta[name="description"]')?.setAttribute("content", currentProduct.description || `خرید ${currentProduct.name} با بهترین قیمت.`);
+                    
+                    const schemaScript = document.createElement('script');
+                    schemaScript.type = 'application/ld+json';
+                    schemaScript.innerHTML = JSON.stringify({
+                        "@context": "https://schema.org/",
+                        "@type": "Product",
+                        "name": currentProduct.name,
+                        "image": currentProduct.image,
+                        "description": currentProduct.description || currentProduct.name,
+                        "brand": { "@type": "Brand", "name": "Mobile Iran" },
+                        "offers": {
+                            "@type": "Offer",
+                            "url": window.location.href,
+                            "priceCurrency": "IRR",
+                            "price": parseInt((currentProduct.discount_price || currentProduct.price).replace(/,/g, '')) * 10,
+                            "availability": "https://schema.org/InStock"
+                        }
+                    });
+                    document.head.appendChild(schemaScript);
+                    
                 } else {
                     document.getElementById('product-detail-container').innerHTML = '<p>محصول یافت نشد.</p>';
                 }
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) { console.error(err); }
         }
 
         function renderProductDetail() {
@@ -202,20 +166,12 @@
                 : `<div class="product-price-box"><span class="current-price">${currentProduct.price} تومان</span></div>`;
 
             container.innerHTML = `
-                <div class="product-gallery">
-                    <div class="main-image-box">
-                        <img src="${currentProduct.image}" alt="${currentProduct.name}">
-                    </div>
-                </div>
+                <div class="main-image-box"><img src="${currentProduct.image}" alt="${currentProduct.name}"></div>
                 <div class="product-info-side">
                     <span class="product-category-tag">${currentProduct.category}</span>
                     <h1 class="product-title">${currentProduct.name}</h1>
-                    <div class="product-rating">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
-                        <span>(۴.۸ از ۵)</span>
-                    </div>
                     ${priceHtml}
-                    <p class="product-description">${currentProduct.description || 'توضیحات تکمیلی برای این محصول ثبت نشده است.'}</p>
+                    <p class="product-description">${currentProduct.description || 'توضیحات تکمیلی ثبت نشده است.'}</p>
                     <button class="btn-add-to-cart" onclick="addToCart(${currentProduct.id})">
                         <i class="fa-solid fa-bag-shopping"></i> افزودن به سبد خرید
                     </button>
@@ -223,45 +179,16 @@
             `;
         }
 
-        function renderSimilarProducts() {
-            const grid = document.getElementById('similar-products-grid');
-            grid.innerHTML = '';
-            const similar = allProducts.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id);
-            const displayList = similar.length > 0 ? similar : allProducts.filter(p => p.id !== currentProduct.id).slice(0, 4);
-
-            if(displayList.length === 0) {
-                grid.innerHTML = '<p style="color:var(--text-light); font-size:0.9rem;">محصول مشابهی یافت نشد.</p>';
-                return;
-            }
-
-            displayList.forEach(p => {
-                let pPrice = p.discount_price ? p.discount_price : p.price;
-                grid.innerHTML += `
-                    <a href="product-detail.html?id=${p.id}" class="product-card">
-                        <div class="card-img"><img src="${p.image}" alt="${p.name}"></div>
-                        <h4 class="card-title">${p.name}</h4>
-                        <div class="card-price">${pPrice} تومان</div>
-                    </a>
-                `;
-            });
-        }
-
         function addToCart(id) {
             let cart = JSON.parse(localStorage.getItem('mobileIranCart')) || [];
             let existingItem = cart.find(item => item.id === id);
-            if (existingItem) {
-                existingItem.qty = (existingItem.qty || 1) + 1;
-            } else {
-                cart.push({ ...currentProduct, qty: 1 });
-            }
+            if (existingItem) existingItem.qty = (existingItem.qty || 1) + 1;
+            else cart.push({ ...currentProduct, qty: 1 });
             localStorage.setItem('mobileIranCart', JSON.stringify(cart));
             alert('محصول به سبد خرید اضافه شد!');
         }
-
-        // توابع submitReview ثابت می ماند ...
 
         window.onload = loadProductData;
     </script>
 </body>
 </html>
-```[cite: 11]
