@@ -87,6 +87,15 @@
         </div>
     </header>
 
+    <!-- نوار جستجو اضافه شده به صفحه جزئیات محصول -->
+    <div class="search-bar-container">
+        <div class="search-box">
+            <!-- با کلیک روی جستجو در این صفحه، کاربر به صفحه محصولات هدایت می‌شود -->
+            <input type="text" id="searchInput" placeholder="جستجوی کالا..." onkeyup="if(event.key === 'Enter') window.location.href='products.html?q='+this.value">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+    </div>
+    
     <main>
         <div class="product-detail-card" id="product-detail-container">
             <p style="text-align:center; width:100%; grid-column:1/-1;">در حال بارگذاری...</p>
