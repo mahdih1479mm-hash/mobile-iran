@@ -152,16 +152,20 @@
         const API_BASE = "https://mobile-iran-api.mahdih1479mm.workers.dev";
         let productsData = [];
 
-        async function fetchProducts() {
+       async function fetchProducts() {
             try {
                 const res = await fetch(`${API_BASE}/api/products`);
                 productsData = await res.json();
                 
-                // بررسی URL برای فیلتر خودکار از طریق منوی کشویی
                 const urlParams = new URLSearchParams(window.location.search);
                 const catParam = urlParams.get('cat');
+                const queryParam = urlParams.get('q'); // پارامتر جدید جستجو
                 
-                if (catParam) {
+                if (queryParam) {
+                    document.getElementById('searchInput').value = queryParam;
+                    handleSearch(); // اجرای تابع جستجو
+                }
+                else if (catParam) {
                     const btn = document.querySelector(`.filter-tab[data-cat="${catParam}"]`);
                     if(btn) {
                         document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
@@ -172,12 +176,10 @@
                 } else {
                     renderProducts(productsData);
                 }
-                
             } catch (err) {
                 document.getElementById('productsGrid').innerHTML = '<p style="grid-column: 1/-1; text-align:center;">خطا در دریافت اطلاعات.</p>';
             }
         }
-
         function renderProducts(items) {
             const grid = document.getElementById('productsGrid');
             grid.innerHTML = '';
