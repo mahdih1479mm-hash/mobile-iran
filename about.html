@@ -1,87 +1,201 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-
-    <meta name="description" content="فروشگاه موبایل ایران - عرضه کننده تخصصی لوازم جانبی موبایل، قاب، کابل، شارژر، ایرپاد و لوازم صوتی با تضمین اصالت کالا و گارانتی معتبر.">
-    <meta property="og:title" content="موبایل ایران | تخصصی‌ترین فروشگاه لوازم جانبی">
-    <meta property="og:site_name" content="Mobile Iran">
-    <meta property="og:locale" content="fa_IR">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#1d1d1f">
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>درباره ما | Mobile Iran</title>
+    <title>درباره ما | موبایل ایران</title>
+    <meta name="description" content="اطلاعات تماس، آدرس و قوانین فروشگاه موبایل ایران واقع در شهریار، ارائه دهنده تخصصی لوازم جانبی اصلی.">
+    
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #d2d2d7; --text-color: #333333; --text-light: #86868b; }
+        :root { --dark-color: #1d1d1f; --gray-bg: #f5f5f7; --border-color: #e5e5ea; --text-color: #1d1d1f; --text-light: #86868b; --accent-color: #0071e3; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
-        body { background-color: #fff; color: var(--text-color); line-height: 1.8; }
+        body { background-color: #fff; color: var(--text-color); line-height: 1.8; display: flex; flex-direction: column; min-height: 100vh; }
         a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
 
-        header { background-color: #fff; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
-        .header-container { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; }
-        .logo { font-size: 1.4rem; font-weight: 800; color: var(--dark-color); }
-        .nav-links { display: flex; gap: 1.8rem; }
-        .nav-links a { font-size: 0.95rem; color: var(--text-light); }
-        .nav-links a:hover, .nav-links a.active { color: var(--dark-color); font-weight: 500; }
+        /* Header */
+        header { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 1rem; }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--dark-color); }
+        .nav-links { display: none; }
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: #fff; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1); z-index: 1; border-radius: 12px; overflow: hidden; top: 100%; right: 0; border: 1px solid var(--border-color); }
+        .dropdown-content a { color: var(--text-color); padding: 12px 16px; display: block; font-size: 0.85rem; border-bottom: 1px solid var(--border-color); }
+        .dropdown-content a:hover { background-color: var(--gray-bg); color: var(--accent-color); }
+        .dropdown:hover .dropdown-content { display: block; }
+        .support-link { color: #34c759 !important; font-weight: 700 !important; direction: ltr; display: inline-block; }
+        .header-actions { display: flex; align-items: center; gap: 0.6rem; }
+        .btn-action { background: var(--gray-bg); border: 1px solid var(--border-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--dark-color); }
 
-        .container { max-width: 900px; margin: 4rem auto; padding: 0 2rem; }
-        .about-card { background: var(--gray-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 3rem; }
-        .about-card h1 { font-size: 2.2rem; font-weight: 800; color: var(--dark-color); margin-bottom: 1.5rem; text-align: center; }
-        .about-card p { font-size: 1.05rem; color: var(--text-color); margin-bottom: 1.2rem; text-align: justify; }
-        .features-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
-        .feature-item { background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border-color); text-align: center; }
-        .feature-item i { font-size: 2rem; color: var(--dark-color); margin-bottom: 0.8rem; }
-        .feature-item h3 { font-size: 1.1rem; margin-bottom: 0.4rem; color: var(--dark-color); }
-        .feature-item p { font-size: 0.9rem; color: var(--text-light); text-align: center; }
+        /* Hero About */
+        .about-hero { background: linear-gradient(135deg, var(--dark-color) 0%, #3a3a3c 100%); color: #fff; text-align: center; padding: 4rem 1rem; }
+        .about-hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; }
+        .about-hero p { font-size: 1rem; max-width: 600px; margin: 0 auto; color: #d2d2d7; }
 
-        footer { background-color: var(--gray-bg); border-top: 1px solid var(--border-color); padding: 2.5rem; text-align: center; color: var(--text-light); font-size: 0.85rem; margin-top: 4rem; }
+        /* Content Sections */
+        .container { max-width: 1000px; margin: 3rem auto; padding: 0 1.5rem; flex: 1;}
+        
+        .info-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 4rem; }
+        .info-card { background: var(--gray-bg); padding: 2rem; border-radius: 20px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1rem; }
+        .info-card i { font-size: 2rem; color: var(--accent-color); margin-bottom: 0.5rem; }
+        .info-card h3 { font-size: 1.2rem; font-weight: 800; color: var(--dark-color); }
+        .info-card p, .info-card address { font-size: 0.95rem; color: var(--text-light); font-style: normal; line-height: 1.8; }
+        .contact-number { font-size: 1.4rem; font-weight: 800; color: var(--dark-color); direction: ltr; text-align: right; margin-top: 0.5rem;}
+        
+        .guarantees-section { margin-bottom: 4rem; }
+        .section-title { font-size: 1.6rem; font-weight: 800; text-align: center; margin-bottom: 2rem; color: var(--dark-color); }
+        
+        .features-list { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .feature-item { background: #fff; padding: 1.8rem; border-radius: 16px; border: 1px solid var(--border-color); display: flex; align-items: flex-start; gap: 1.2rem; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: 0.3s;}
+        .feature-item:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.05);}
+        .feature-icon { width: 50px; height: 50px; border-radius: 12px; background: #e8f4fd; color: var(--accent-color); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;}
+        .feature-text h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--dark-color); }
+        .feature-text p { font-size: 0.9rem; color: var(--text-light); }
+
+        .rules-section { background: var(--gray-bg); padding: 2.5rem; border-radius: 20px; border: 1px solid var(--border-color); }
+        .rules-section h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1.5rem; color: var(--dark-color); }
+        .rules-section ul { list-style: disc; margin-right: 1.5rem; color: var(--text-color); font-size: 0.95rem; }
+        .rules-section li { margin-bottom: 0.8rem; }
+
+        /* Footer */
+        .site-footer { background-color: var(--dark-color); color: #fff; padding: 3rem 1rem 1rem; margin-top: auto; }
+        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .footer-col h4 { font-size: 1.1rem; margin-bottom: 1rem; color: #fff; }
+        .footer-col p { font-size: 0.85rem; color: #a1a1a6; line-height: 1.8; margin-bottom: 0.8rem; }
+        .footer-col a { display: block; color: #a1a1a6; font-size: 0.85rem; margin-bottom: 0.6rem; transition: 0.2s; }
+        .footer-col a:hover { color: #fff; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center; font-size: 0.8rem; color: #a1a1a6; }
+
+        @media (min-width: 768px) {
+            .nav-links { display: flex; gap: 1.5rem; align-items: center; font-size: 0.9rem;}
+            .info-grid { grid-template-columns: 1fr 1fr; }
+            .features-list { grid-template-columns: 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
+
     <header>
         <div class="header-container">
             <div class="logo">Mobile Iran</div>
             <ul class="nav-links">
                 <li><a href="index.html">خانه</a></li>
-                <li><a href="cases.html">قاب و کاور</a></li>
+                <li class="dropdown">
+                    <a href="products.html">دسته‌بندی‌ها <i class="fa-solid fa-chevron-down" style="font-size:0.7rem;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="products.html?cat=موبایل و قاب">موبایل و قاب</a>
+                        <a href="products.html?cat=کابل و شارژر">کابل و شارژر</a>
+                        <a href="products.html?cat=ایرپاد و هندزفری">ایرپاد و هندزفری</a>
+                        <a href="products.html?cat=هدفون و دورگردنی">هدفون و دورگردنی</a>
+                        <a href="products.html?cat=اسپیکر و لوازم صوتی">اسپیکر و لوازم صوتی</a>
+                        <a href="products.html?cat=مبدل و ذخیره‌سازی">مبدل و ذخیره‌سازی</a>
+                        <a href="products.html?cat=لوازم جانبی خودرو">لوازم جانبی خودرو</a>
+                    </div>
+                </li>
                 <li><a href="products.html">همه محصولات</a></li>
                 <li><a href="about.html" class="active">درباره ما</a></li>
+                <li><a href="tel:09198980076" class="support-link"><i class="fa-solid fa-headset"></i> 09198980076</a></li>
             </ul>
+            <div class="header-actions">
+                <a href="cart.html" class="btn-action"><i class="fa-solid fa-bag-shopping"></i></a>
+                <a href="auth.html" class="btn-action"><i class="fa-regular fa-user"></i></a>
+            </div>
         </div>
     </header>
 
-    <div class="container">
-        <div class="about-card">
-            <h1>درباره فروشگاه Mobile Iran</h1>
-            <p>فروشگاه **موبایل ایران (Mobile Iran)** از سال‌ها پیش با هدف ارائه تخصصی‌ترین و باکیفیت‌ترین لوازم جانبی موبایل، گجت‌های هوشمند و تجهیزات اورجینال آغاز به کار کرده است. ما در این مجموعه تلاش می‌کنیم تا دسترسی به بهترین برندهای جهانی قاب گوشی، کابل‌های شارژ، مگ‌سیف و پاوربانک را با منصفانه‌ترین قیمت‌ها برای شما فراهم کنیم.</p>
-            <p>اعتماد شما بزرگ‌ترین سرمایه ماست و تمام محصولات ارائه شده در این فروشگاه دارای ضمانت اصالت و سلامت فیزیکی می‌باشند.</p>
+    <div class="about-hero">
+        <h1>چرا موبایل ایران؟</h1>
+        <p>ما اینجا هستیم تا تجربه‌ای امن، سریع و باکیفیت از خرید لوازم جانبی اورجینال را برای شما رقم بزنیم.</p>
+    </div>
 
+    <main class="container">
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <i class="fa-solid fa-store"></i>
+                <h3>فروشگاه حضوری ما</h3>
+                <address>تهران، شهریار<br>خیابان مفتح، نبش مسجد قائم<br>فروشگاه موبایل ایران</address>
+                <p style="margin-top:auto;">ساعت کاری: همه‌روزه از ۹ صبح تا ۹ شب</p>
+            </div>
+            <div class="info-card">
+                <i class="fa-solid fa-headset"></i>
+                <h3>تماس و پشتیبانی</h3>
+                <p>برای دریافت مشاوره پیش از خرید، پیگیری سفارشات و یا پشتیبانی گارانتی با شماره زیر تماس بگیرید:</p>
+                <div class="contact-number"><a href="tel:09198980076">0919 898 0076</a></div>
+                <p style="font-size:0.8rem; margin-top:auto;">(پاسخگویی در ساعات کاری فروشگاه)</p>
+            </div>
+        </div>
+
+        <div class="guarantees-section">
+            <h2 class="section-title">مزایای خرید از موبایل ایران</h2>
             <div class="features-list">
                 <div class="feature-item">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h3>ضمانت اصالت کالا</h3>
-                    <p>تمامی محصولات عرضه شده اورجینال و باکیفیت بالا هستند.</p>
+                    <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="feature-text">
+                        <h4>تضمین اصالت کالا</h4>
+                        <p>تمامی محصولات ارائه شده، به ویژه کابل‌ها، شارژرها و هندزفری‌ها، دارای تاییدیه اورجینال بوده و با ضمانت سلامت فیزیکی عرضه می‌شوند.</p>
+                    </div>
                 </div>
                 <div class="feature-item">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <h3>ارسال سریع</h3>
-                    <p>ارسال امن و سریع سفارشات به سراسر کشور در کوتاه‌ترین زمان.</p>
+                    <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                    <div class="feature-text">
+                        <h4>ارسال سریع</h4>
+                        <p>بسته‌بندی ایمن و ارسال سریع سفارشات به سراسر کشور از طریق پست پیشتاز و امکان ارسال با پیک در کمترین زمان.</p>
+                    </div>
                 </div>
                 <div class="feature-item">
-                    <i class="fa-solid fa-headset"></i>
-                    <h3>پشتیبانی تخصصی</h3>
-                    <p>پاسخگویی به سوالات شما در خصوص سازگاری لوازم جانبی با گوشی.</p>
+                    <div class="feature-icon"><i class="fa-solid fa-tags"></i></div>
+                    <div class="feature-text">
+                        <h4>بهترین قیمت بازار</h4>
+                        <p>تلاش ما حذف واسطه‌ها و ارائه تخصصی‌ترین لوازم جانبی موبایل با منصفانه‌ترین و رقابتی‌ترین قیمت‌ها است.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-rotate-left"></i></div>
+                    <div class="feature-text">
+                        <h4>پشتیبانی و مهلت تست</h4>
+                        <p>ارائه مهلت تست برای قطعات الکترونیکی جهت اطمینان شما از کارکرد صحیح و بی‌‌نقص محصول خریداری شده.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <footer>
-        <p>تمامی حقوق برای فروشگاه <strong>Mobile Iran</strong> محفوظ است.</p>
+        <div class="rules-section">
+            <h3>قوانین و شرایط گارانتی</h3>
+            <ul>
+                <li>مشتری موظف است هنگام دریافت کالا از مامور پست، سلامت فیزیکی بسته‌بندی را بررسی نماید.</li>
+                <li>کالاهای دارای گارانتی شرکتی، خدمات پس از فروش آن‌ها بر عهده شرکت گارانتی‌کننده می‌باشد.</li>
+                <li>اقلامی مانند قاب و گلس که ماهیت مصرفی دارند، صرفاً دارای ضمانت سلامت فیزیکی در لحظه تحویل هستند.</li>
+                <li>در صورت وجود هرگونه مشکل فنی در لوازم الکترونیکی (شارژر، پاوربانک و ...)، حداکثر تا ۲۴ ساعت پس از دریافت کالا، مشکل را به واحد پشتیبانی اطلاع دهید.</li>
+                <li>عودت کالا تنها در صورت باز نشدن پلمپ اورجینال جعبه و با هماهنگی قبلی پشتیبانی امکان‌پذیر است.</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>درباره موبایل ایران</h4>
+                <p>فروشگاه موبایل ایران با هدف ارائه تخصصی‌ترین لوازم جانبی اورجینال، تضمین پایین‌ترین قیمت و بالاترین کیفیت در خدمت شماست.</p>
+                <p><i class="fa-solid fa-location-dot"></i> <strong>آدرس:</strong> تهران، شهریار، خیابان مفتح، نبش مسجد قائم</p>
+                <p><i class="fa-solid fa-phone"></i> <strong>پشتیبانی:</strong> <a href="tel:09198980076" style="display:inline; direction:ltr;">0919 898 0076</a></p>
+            </div>
+            <div class="footer-col">
+                <h4>لینک‌های مفید</h4>
+                <a href="about.html"><i class="fa-solid fa-angle-left"></i> چرا موبایل ایران؟</a>
+                <a href="#"><i class="fa-solid fa-angle-left"></i> سوالات متداول</a>
+                <a href="#"><i class="fa-solid fa-angle-left"></i> قوانین و شرایط گارانتی</a>
+            </div>
+            <div class="footer-col">
+                <h4>اعتماد شما، سرمایه ماست</h4>
+                <p>تمامی محصولات این فروشگاه دارای ضمانت سلامت فیزیکی و تاییدیه اورجینال بودن کالا می‌باشند. خرید امن و ارسال سریع به سراسر کشور.</p>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>تمامی حقوق این سایت متعلق به فروشگاه <strong>موبایل ایران</strong> می‌باشد. © 1403</p></div>
     </footer>
+
 </body>
 </html>
